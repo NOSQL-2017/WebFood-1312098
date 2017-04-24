@@ -1,0 +1,93 @@
+.section-suggestion {
+     h2, h3 {
+    font-family: $open-sans;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    }
+
+    h2 {
+        font-size: 180%;
+        word-spacing: 2px;
+        text-align: center;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+
+    h2:after {
+        display: block;
+        height: 2px;
+        background-color: #3498db;
+        content: " ";
+        width: 100px;
+        margin: 0 auto;
+        margin-top: 30px;
+    }
+
+    h3 {
+        font-size: 110%;
+        margin-bottom: 15px;
+    }
+
+    .box {
+        padding: 1%;
+    }
+
+    .box p {
+        font-size: 90%;
+        line-height: 145%;
+    }
+
+    .long-copy {
+        line-height: 145%;
+        width: 70%;
+        margin-left: 15%;
+    }
+
+    /*------ICONS-----*/
+    .icon-big {
+        font-size: 400%;
+        display: block;
+        color: #3498db;
+        margin-bottom: 10px;
+    }
+}
+
+.suggestion-places {
+    padding: 0;
+
+    .places-showcase {
+        list-style: none;
+        width: 100%;
+        margin: 0;
+
+        li {
+            display: block;
+            float: left;
+            width: 25%;
+            
+
+            .places-photo {
+                width: 100%;
+                margin: 0;
+                overflow: hidden;
+                background-color: #000;
+
+                img {
+                    opacity: 0.7;
+                    width: 100%;
+                    height: auto;
+                    transform: scale(1.15);
+                    transition: transform 0.5s;
+                }
+
+                img:hover {
+                    opacity: 1;
+                    transform: scale(1.03);
+                }
+            }
+        }
+    }
+
+
+}

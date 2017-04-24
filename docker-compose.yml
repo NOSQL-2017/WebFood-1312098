@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_USER=pvDung
+      - POSTGRES_DB=DoAnCuoiKi
+  web:
+    build: ./Client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Client:/usr/src/doancuoiki/Client
+    links: 
+      - webapi 
+  webapi:
+    build: ./serverapi
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./serverapi:/usr/src/doancuoiki/serverapi
+    links:
+      - db
+    depends_on:
+      - db

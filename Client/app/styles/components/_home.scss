@@ -1,0 +1,88 @@
+.section-home {
+    .images {
+        float: left;
+        margin-left: 100px;
+
+        ul {
+            list-style: none;
+            width: 100%;
+            
+
+            li {
+                h5 {
+                    font-weight: 600;
+                }
+                padding: 10px 0px;
+                border: 1px solid #ecf0f1;
+                background-color: #f6f8f8;
+                display: block;
+                width: 100%;
+                margin: 10px;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                }
+
+                div {
+                    display: block
+                }
+                .infor-images {
+                    padding: 0 0 2px 20px;
+                    border-bottom: 2px solid #ecf0f1;
+                    margin-bottom: 5px;
+                }
+                .like {
+                    padding: 5px 0 0 20px;
+                    border-bottom: 2px solid #ecf0f1;
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+    .information {
+        float: right;
+        margin-right: 50px;
+
+        .person-infor, .person-follower {
+            h4{
+                font-weight: 600;
+                text-align: center;
+                border-bottom: 1px solid #ecf0f1;
+            }
+
+            margin: 20px 5px 10px 10px;
+            border: 1px solid #ecf0f1;
+            background-color: #f6f8f8;
+        }
+        .person-infor {
+            padding: 10px 0 10px 20px;
+        }
+
+         .person-follower {
+             ul {
+                 list-style: none;
+                 display: flex;
+             }
+
+             .name-follower {
+                margin: 0 0 10px 10px;
+             }
+
+             .btn-Unfollower {
+                margin: 0 0 10px 60px;
+                font-size: 80%;
+                font-weight: 600;
+                border-radius: 10px;
+                padding:6px 10px;
+                border: 1px solid #3498db;
+                color: #3498db;
+            }
+            .btn-Unfollower:hover {
+                    background-color: #2487c9;
+                    border: 1px solid #2487c9;
+                    color: #fff;
+                }
+         }
+    }
+}

@@ -1,0 +1,64 @@
+.uploadimages {
+    margin-top: 30px;
+    div {
+        height: 40px;
+    }
+    div:link, div:visited {
+        transition: hover 0.2s, active 0.2s;
+    }
+    div:hover, div:active {
+        display: block;
+        width: 50%;
+        font-weight: 600;
+        border-bottom: 2px solid #2487c9;
+    }
+
+    .dropzone {
+        height: 40px;
+    }
+
+}
+
+ .section-upload-images {
+        padding: 0;
+        margin: 10px 10px;
+
+        .my-images-upload {
+            list-style: none;
+            width: 100%;
+            margin: 10px 10px;
+            li {
+                text-align: center;
+                display: inline-block;
+                width: 22%;
+                margin: 10px;
+                .image {
+                    width: 100%;
+                    margin: 0;
+                    overflow: hidden;
+                    background-color: #000;
+                }
+            }
+        }
+    }
+.message {
+    text-align: center;
+    margin: 10px;
+    color: #000;
+    height: 40px;
+    
+    .btn-save {
+        border-radius: 10px;
+        font-size: 80%;
+        font-weight: 600;
+        padding: 10px 30px;
+        border: 1px solid #3498db;
+        color: #3498db;
+    }
+
+    .btn-save:hover {
+        background-color: #2487c9;
+        border: 1px solid #2487c9;
+        color: #fff;
+    }
+}
