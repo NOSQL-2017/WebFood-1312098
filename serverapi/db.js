@@ -1,12 +1,4 @@
 var pgp = require('pg-promise')();
+ 
+module.exports = pgp('postgres://pvDung:123456@db:5432/DoAnCuoiKi');
 
-var cn = {
-    host: 'db',
-    port: 5432,
-    database: 'DoAnCuoiKi',
-    user: 'pvDung',
-    password: '123456'
-};
-
-
-module.exports = pgp(cn);

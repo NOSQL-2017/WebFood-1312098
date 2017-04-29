@@ -7,11 +7,12 @@ WORKDIR /usr/src/doancuoiki/Client
 
 # Install app dependencies
 COPY package.json /usr/src/doancuoiki/Client
-RUN npm install
+RUN npm install nodemon
 RUN npm install -g webpack@1.12.13 
+RUN npm install
 
 # Bundle app source
 COPY . /usr/src/doancuoiki/Client
 
 EXPOSE 3000
-CMD npm rebuild node-sass && webpack && npm start
+CMD  webpack && npm start

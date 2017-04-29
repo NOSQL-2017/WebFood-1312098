@@ -111,4 +111,3 @@ module.exports = connect(
     }
 )(follower);
 
-//<button className="btn-follower" onClick={() => {this.handleClickFollow(friend.username)}}>followers</button>

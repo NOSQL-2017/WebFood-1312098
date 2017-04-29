@@ -1,61 +1,61 @@
 var uuid = require('node-uuid');
 var moment = require('moment');
 
-
-export var pressButtonReducer = (state = 0, action) => {
+export var giaoDienReducer = (state = false, action ) => {
     switch(action.type) {
-        case 'RESET_BUTTON':
-            state = 0;
-            return state;
-        case 'PRESS_LOGIN':
-            state = 1;
-            return state;
-        case 'PRESS_SIGNUP':
-            state = 2;
-            return state;
-        default:
+        case 'DOI_GIAO_DIEN':
+            return !state;
+        default: 
             return state;
     }
 }
 
-export var pressButtonFuncReducer = (state = 0, action) => {
+export var nguoidungReducer = (state = {isLogin: false,tendangnhap: '', kiemtra: false, dangky: 0, dangnhap: 0 }, action) => {
     switch(action.type) {
-        case 'RESET_BUTTON_FUNC':
-            state = 0;
-            return state;
-        case 'PRESS_UPLOAD':
-            state = 3;
-            return state;
-        default:
-            return state;
-    }
-}
-
-export var loginReducer = (state = {isLogin: 0, username: undefined,isFetching: false}, action) => {
-    switch(action.type) {
-        case 'RESET_LOGIN':
+        case 'KIEM_TRA_DANG_KY':
             return {
-                isLogin: 0,
-                username: undefined,
-                isFetching: false
+                ...state,
+                kiemtra: true
             }
-        case 'START_LOGIN_FETCH':
+        case 'DANG_KY_THANH_CONG':
             return {
-                isLogin: 0,
-                unsername: undefined,
-                isFetching: true
+                ...state,
+                kiemtra: false,
+                tendangnhap: action.tendangnhap,
+                dangky: 1,
+                isLogin: true
             }
-        case 'LOGIN_SUCCESS':
+        case 'DANG_KY_THAT_BAI':
             return {
-                isFetching: false,
-                isLogin: 1,
-                username: action.username
+                ...state,
+                kiemtra: false,
+                dangky: 2
             }
-        case 'LOGIN_FAILED': 
+        case 'KIEM_TRA_DANG_NHAP':
             return {
-                isFetching: false,
-                isLogin: 2,
-                username: undefined
+                ...state,
+                kiemtra: true
+            }
+        case 'DANG_NHAP_THANH_CONG':
+            return {
+                ...state,
+                kiemtra: false,
+                dangnhap: 1,
+                isLogin: true,
+                tendangnhap: action.tendangnhap
+            }
+        case 'DANG_NHAP_THAT_BAI':
+            return {
+                ...state,
+                kiemtra: false,
+                dangnhap: 2
+            }
+        case 'DANG_XUAT':
+            return {
+                ...state,
+                isLogin: false,
+                dangnhap: 0,
+                dangky: 0
             }
         default: 
             return state;
@@ -63,51 +63,74 @@ export var loginReducer = (state = {isLogin: 0, username: undefined,isFetching: 
 }
 
 
-export var uploadImageReducer = (state = {isUpload: 0}, action) => {
+export var ImageReducer = (state = {isUpload: false, dsAnh: [], isSaving: false,isGetting: false, dsAnhDaLuu: []}, action) => {
     switch (action.type) {
-        case 'RESET_STATE_UPLOAD':
-            state.isUpload = 0;
-            return state;
-        case 'START_UPLOAD_IMAGES':
-            state.isUpload = 1;
-            return state;
-        case 'COMPLETED_UPLOAD_IMAGES':
-            state.isUpload = 2;
-            return state;
+        case 'BAT_DAU_TAI_ANH':
+            return {
+                ...state,
+                isUpload: true
+            }
+        case 'TAI_ANH_THANH_CONG':
+            return {
+                ...state,
+                isUpload: false,
+                dsAnh: [
+                    ...state.dsAnh,
+                    action.anh
+                ]
+            }
+        case 'LUU_ANH_TC':
+            var update = state.dsAnh.filter( (e) => {
+                return e.secure_url != action.url;
+            })
+            return {
+                ...state,
+                dsAnh: update
+            } 
+        case 'BD_LAY_ANH':
+            return {
+                ...state,
+                isGetting: true
+            }
+        case 'LAY_ANH_TC': 
+            return {
+                ...state,
+                isGetting: false,
+                dsAnhDaLuu: action.dsAnhDaLuu
+            }
+        case 'XOA_ANH_TC':
+            var update = state.dsAnhDaLuu.filter( (e) => {
+                return e.maanh != action.maanh;
+            })
+            //var updateds = Object.create([], update);
+            return {
+                ...state,
+                dsAnhDaLuu: update
+
+            }
         default:
             return state;
     }
 }
 
-export var imagesReducer = (state = {isSaving: false, error: false, isGetting: false, images: []}, action) => {
-    switch (action.type) {
-        case 'RESET_STATE_IMAGES':
-            state.isSaving = false;
-            state.error = false;
-            return state;
-        case 'START_SAVE_URL_IMAGES':
-            state.isSaving = true;
-            return state;
-        case 'COMPLETED_SAVE_URL_IMAGES':
-            state.isSaving = false;
-            return state;
-        case 'FAILED_SAVE_URL_IMAGES':
-            state.error = true;
-            return state;
-        case 'START_GET_IMAGES':
-            state.isGetting = true;
-            return state;
-        case 'COMPLETED_GET_IMAGES':
-            state.isGetting = false;
-            state.images = action.images;
-            return state;
-        case 'FAILED_GET_IMAGES':
-            state.error = true;
-            return state;
+export var diaDanhReducer = (state = {dsDiaDanh: [], tenDiaDanh: ''}, action) => {
+    switch(action.type) {
+        case 'LAY_DS_DIA_DANH':
+            return {
+                ...state,
+                dsDiaDanh: action.dsDiaDanh
+            }
+        case 'LAY_DIA_DANH_THEO_MA':
+            return {
+                ...state,
+                tenDiaDanh: action.tenDiaDanh
+            }
         default:
             return state;
     }
 }
+
+
 
 
 export var usersReducer = (state = {isGetting: false, listUsers: [], followers: []}, action) => {

@@ -1,142 +1,255 @@
 var axios = require('axios');
-// Login
-export var resetButton = () => {
+
+var sha1 = require('sha1');
+var superagent = require('superagent')
+
+
+// ----- nguoi dung ----------------///
+export var doiGiaoDien = () => {
     return {
-        type: 'RESET_BUTTON'
+        type: 'DOI_GIAO_DIEN'
     }
 }
 
-export var pressLogin = () => {
+export var dangXuat = () => {
     return {
-        type: 'PRESS_LOGIN'
+        type: 'DANG_XUAT'
     }
-};
-
-export var pressSignup = () => {
+}
+export var kiemTraDangNhap = () => {
     return {
-        type: 'PRESS_SIGNUP'
-    }
-};
-
-export var pressUpload = () => {
-    return {
-        type: 'PRESS_UPLOAD'
-    }
-};
-
-export var resetButtonFunc = () => {
-    return {
-        type: 'RESET_BUTTON_FUNC'
+        type: 'KIEM_TRA_DANG_NHAP'
     }
 }
 
-
-// kiem tra dang nhap
-export var resetLogin = () => {
+export var dangNhapThanhCong = (tendangnhap) => {
     return {
-        type: 'RESET_LOGIN'
-    }
-}
-
-export var startLoginFetching = () => {
-    return {
-        type: 'START_LOGIN_FETCH'
-    }
-}
-
-export var loginSuccess = (username) => {
-    return {
-        type: 'LOGIN_SUCCESS',
-        username
+        type: 'DANG_NHAP_THANH_CONG',
+        tendangnhap
     }
 }
 
 
-export var loginFailed = () => {
+export var dangNhapThatBai = () => {
     return {
-        type: 'LOGIN_FAILED'
+        type: 'DANG_NHAP_THAT_BAI'
     }
 }
 
 
-export var fetchLogin = (username, password) => {
-    var tenDangNhap = username;
-    var matKhau = password
+export var dangNhap = (username, password) => {
+    var tendangnhap = username;
+    var matkhau = password
     return (dispatch, getState) => {
-        dispatch(startLoginFetching());
-        axios.post('http://localhost:8080/api/login', {
-            tenDangNhap: tenDangNhap,
-            matKhau: matKhau
-        }).then(function(res) {
+        dispatch(kiemTraDangNhap());
+        axios.post('http://localhost:8080/api/nguoidung/login', {
+            tendangnhap,
+            matkhau
+        }).then(function (res) {
             if (res.data.error == false) {
-                dispatch(loginSuccess(tenDangNhap));
+                dispatch(dangNhapThanhCong(tendangnhap));
             } else {
-                dispatch(loginFailed());
+                dispatch(dangNhapThatBai());
             }
         })
+    }
+}
+
+
+export var kiemTraDangKy = () => {
+    return {
+        type: 'KIEM_TRA_DANG_KY'
+    }
+}
+
+export var dangKyThanhCong = (tendangnhap) => {
+    return {
+        type: 'DANG_KY_THANH_CONG',
+        tendangnhap
+    }
+}
+
+export var dangKyThatBai = () => {
+    return {
+        type: 'DANG_KY_THAT_BAI'
+    }
+}
+
+export var dangKy = (tendangnhap, hoten, email, matkhau) => {
+    return (dispatch, getState) => {
+        dispatch(kiemTraDangKy());
+
+        axios.post('http://localhost:8080/api/nguoidung/signup', {
+            tendangnhap,
+            hoten,
+            email,
+            matkhau
+        })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(dangKyThanhCong(tendangnhap));
+                } else {
+                    dispatch(dangKyThatBai());
+                }
+            })
+
     }
 }
 
 
 // upload images
-export var resetStateUpload = () => {
+
+export var batDauTaiAnh = () => {
     return {
-        type: 'RESET_STATE_UPLOAD'
-    }
-}
-export var startUploadImages = () => {
-    return {
-        type: 'START_UPLOAD_IMAGES'
+        type: 'BAT_DAU_TAI_ANH'
     }
 }
 
-export var completedUpload = () => {
+export var taiAnhThanhCong = (anh) => {
     return {
-        type: 'COMPLETED_UPLOAD_IMAGES'
+        type: 'TAI_ANH_THANH_CONG',
+        anh
     }
 }
 
-// save link images and owners images to postgres
-export var resetStateImage = () => {
-    return {
-        type:  'RESET_STATE_IMAGES'
-    }
-}
-export var startSaveImagesToPg = () => {
-    return {
-        type: 'START_SAVE_URL_IMAGES',
-    }
-}
-
-export var completedSaveImagesToPg = () => {
-    return {
-        type: 'COMPLETED_SAVE_URL_IMAGES'
-    }
-}
-
-export var failedSaveImagesToPg = () => {
-    return {
-        type: 'FAILED_SAVE_URL_IMAGES'
-    }
-}
-
-export var saveImageToPg = (username, urls) => {
+export var taiAnh = (files) => {
     return (dispatch, getState) => {
-        dispatch(startSaveImagesToPg());
+        dispatch(batDauTaiAnh());
+        var image = files;
+        var cloudName = 'doancuoiki';
+        var url = 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload';
 
-        axios.post('http://localhost:8080/api/images', {
-            username: username,
-            urls: urls
-        }).then(function(res) {
-            if (res.data.error == false) {
-                console.log('Thanh Cong');
-                dispatch(completedSaveImagesToPg());
-            } else {
-                dispatch(failedSaveImagesToPg());
-            }
+        var timestamp = Date.now() / 1000;
+        var uploadPreset = 'pvdung';
+
+        var paramsStr = 'timestamp=' + timestamp + '&upload_preset=' +
+            uploadPreset + 'e68qaWrrPTkhExBJsAW4ngQrQvw';
+        var signature = sha1(paramsStr);
+
+        var params = {
+            'api_key': '894259973189773',
+            'timestamp': timestamp,
+            'upload_preset': uploadPreset,
+            'signature': signature
+        }
+
+
+        files.forEach(image => {
+            var uploadRequest = superagent.post(url);
+            uploadRequest.attach('file', image);
+
+            Object.keys(params).forEach((key) => {
+                uploadRequest.field(key, params[key])
+            });
+
+            uploadRequest.end((err, resp) => {
+                if (err) {
+                    alert(err, null);
+                    return;
+                }
+
+                var uploaded = resp.body;
+                dispatch(taiAnhThanhCong(uploaded));
+
+            })
         })
     }
+
 }
+
+export var batDauLuuAnh = () => {
+    return {
+        type: 'BD_LUU_ANH'
+    }
+}
+
+export var luuAnhThanhCong = (url) => {
+    return {
+        type: 'LUU_ANH_TC',
+        url
+    }
+}
+
+
+export var luuAnh = (url, sohuu, camnhan, diadanh ) => {
+    return (dispatch, getState) => {
+        axios.post('http://localhost:8080/api/anh', {
+           url,
+           sohuu,
+           camnhan,
+           diadanh
+        })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(luuAnhThanhCong(url));
+                } else {
+                    
+                }
+            })
+    }
+}
+
+export var batDauLayAnh = () => {
+    return {
+        type: 'BD_LAY_ANH'
+    }
+}
+
+export var layAnhThanhCong = (dsAnhDaLuu) => {
+    return {
+        type: 'LAY_ANH_TC',
+        dsAnhDaLuu
+    }
+}
+
+export var layAnh = (sohuu) => {
+    return (dispatch, getState) => {
+        axios.get('http://localhost:8080/api/anh', {
+          params: {
+              sohuu
+          }
+        })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(layAnhThanhCong(response.data.dsAnhDaLuu));
+                } else {
+                    
+                }
+            })
+    }
+}
+
+
+export var batDauXoaAnh = () => {
+    return {
+        type: 'BD_XOA_ANH'
+    }
+}
+
+export var xoaAnhThanhCong = (maanh) => {
+    return {
+        type: 'XOA_ANH_TC',
+        maanh
+    }
+}
+
+export var xoaAnh = (maanh) => {
+    return (dispatch, getState) => {
+        axios.delete('http://localhost:8080/api/anh', {
+          params: {
+              maanh
+          }
+        })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(xoaAnhThanhCong(maanh));
+                }
+            })
+    }
+}
+
+
+
 
 // Get link images form pg
 
@@ -172,9 +285,9 @@ export var Follower = (username, follower) => {
         axios.post('http://localhost:8080/api/followers', {
             tenDangNhap: username,
             follower: follower
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
-                console.log("Thanh Cong");    
+                console.log("Thanh Cong");
             }
         })
     }
@@ -183,15 +296,61 @@ export var Follower = (username, follower) => {
 export var UnFollower = (username, follower) => {
     return (dispatch, getState) => {
         axios.delete('http://localhost:8080/api/followers', {
-           params: { 
+            params: {
                 tenDangNhap: username,
                 follower: follower
-           }
-        }).then(function(res) {
+            }
+        }).then(function (res) {
             if (res.data.error == false) {
-                console.log("Thanh Cong");    
+                console.log("Thanh Cong");
             }
         })
     }
 }
 
+//--- dia danh --- //
+
+export var layDsDiaDanhTc = (dsDiaDanh) => {
+    return {
+        type: 'LAY_DS_DIA_DANH',
+        dsDiaDanh
+    }
+}
+
+export var layDsDiaDanh = () => {
+    return (dispatch, getState) => {
+         axios.get('http://localhost:8080/api/diadanh')
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(layDsDiaDanhTc(response.data.dsDiaDanh));
+                } else {
+                    
+                }
+            })
+    }
+}
+
+
+export var layDiaDanhTheoMaTC = (tenDiaDanh) => {
+    return {
+        type: 'LAY_DIA_DANH_THEO_MA',
+        tenDiaDanh
+    }
+}
+
+export var layDiaDanhTheoMa = (madiadanh) => {
+     return (dispatch, getState) => {
+         axios.get('http://localhost:8080/api/diadanh/id', {
+             params: {
+                 madiadanh
+             }
+         })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(layDiaDanhTheoMaTC(response.data.tendiadanh['0'].tendiadanh));
+                } else {
+                    
+                }
+            })
+    }
+}

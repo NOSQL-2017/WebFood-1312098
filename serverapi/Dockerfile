@@ -7,6 +7,7 @@ WORKDIR /usr/src/doancuoiki/serverapi
 
 # Install app dependencies
 COPY package.json /usr/src/doancuoiki/serverapi
+RUN npm install nodemon
 RUN npm install
 
 # Bundle app source

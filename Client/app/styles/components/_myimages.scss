@@ -1,47 +1,101 @@
-.section-my-images {
-    h2 {
-        font-family: $open-sans;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 180%;
-        word-spacing: 2px;
-        text-align: center;
-        margin-bottom: 30px;
-        letter-spacing: 1px;
+.MyImages {
+    margin-top: 50px;
+
+    .ImagesUpload {
+        margin-left: 10px;
     }
 
-    padding: 0;
-    margin: 30px 30px;
+    .chucnang {
 
-    .my-images {
-        list-style: none;
-        width: 100%;
-        margin: 10px 10px;
+    }
+    .hienthi {
+        padding: 0 50px;
 
-        li {
-            display: inline-block;
-            width: 22%;
-            margin: 10px;
-
-            .images {
-                width: 100%;
-                margin: 0;
-                overflow: hidden;
-                background-color: #000;
-
-                 img {
-                    opacity: 0.7;
-                    width: 100%;
-                    height: auto;
-                    transform: scale(1.15);
-                    transition: transform 0.5s;
-                }
-
-                img:hover {
-                    opacity: 1;
-                    transform: scale(1.03);
-                }
-            }
+        .upload {
+            width: 50%;
+            border-bottom: 1px solid #ecf0f1;
         }
+
+        
+        .marketing-site-content-section {
+            margin: 50px;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            
+        }
+
+        .marketing-site-content-section .button.round {
+        border-radius: 5000px;
+        text-transform: uppercase;
+        margin-bottom: 0;
+        }
+
+        .marketing-site-content-section .marketing-site-content-section-img {
+        -webkit-align-self: center;
+            -ms-flex-item-align: center;
+                    -ms-grid-row-align: center;
+                align-self: center;
+        -webkit-flex: 1 0 100%;
+            -ms-flex: 1 0 100%;
+                flex: 1 0 100%;
+        }
+
+        .marketing-site-content-section .marketing-site-content-section-img img {
+        width: 100%;
+        }
+
+        @media screen and (min-width: 40em) {
+        .marketing-site-content-section .marketing-site-content-section-img {
+            -webkit-flex: 1 0 50%;
+                -ms-flex: 1 0 50%;
+                    flex: 1 0 50%;
+        }
+        }
+
+        .marketing-site-content-section .marketing-site-content-section-block {
+        padding: 1rem;
+        -webkit-flex: 1 0 100%;
+            -ms-flex: 1 0 100%;
+                flex: 1 0 100%;
+        -webkit-align-self: stretch;
+            -ms-flex-item-align: stretch;
+                align-self: stretch;
+        background: #e6e6e6;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-justify-content: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-align-items: flex-start;
+            -ms-flex-align: start;
+                align-items: flex-start;
+        }
+
+        @media screen and (min-width: 40em) {
+        .marketing-site-content-section .marketing-site-content-section-block {
+            -webkit-flex: 1 0 50%;
+                -ms-flex: 1 0 50%;
+                    flex: 1 0 50%;
+            padding: 2rem;
+        }
+        }
+
+        .marketing-site-content-section-block-header {
+        font-size: 24px;
+        }
+
+        .marketing-site-content-section-block-subheader {
+        font-size: 13px;
+        }
+
+
     }
 }

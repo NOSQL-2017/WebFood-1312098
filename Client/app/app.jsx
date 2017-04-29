@@ -9,10 +9,10 @@ var Content = require('content');
 var store = require('configureStore').configure();
 var Login = require('Login');
 var Signup = require('Signup');
-var uploadImage = require('uploadImage');
-var myImages = require('myimages');
 var followers = require('follower');
-
+var MyImages = require('MyImages');
+var ImageLB = require('ImageLB');
+var ImagesUpload = require('ImagesUpload');
 // Load foundation
 // add all features of foundation
 require('style!css!foundation-sites/dist/css/foundation.min.css');
@@ -28,8 +28,10 @@ ReactDOM.render(
                 <IndexRoute component={Content} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup} />
-                <Route path="/uploadimage" component={uploadImage}></Route>
-                <Route path="/myimages" component={myImages} />
+                <Route path="/images" component={MyImages}>
+                    <IndexRoute component={ImageLB} />
+                    <Route path="/images/upload" component={ImagesUpload} />
+                </Route>
                 <Route path="/followers" component={followers} />
             </Route>
         </Router>

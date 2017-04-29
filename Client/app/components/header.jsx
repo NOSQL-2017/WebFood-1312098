@@ -5,18 +5,17 @@ var Nav = require('Navbar');
 
 var Header = React.createClass({
     render: function() {
-        var {button, buttonFunc, login} = this.props;
-        console.log(button);
+        var {dispatch, nguoidung, giaodien} = this.props;
 
         var loadTitle = function() {
-            if (button === 0 && buttonFunc === 0 && login.isLogin !== 1) {
+            if (nguoidung.isLogin == false && giaodien == false) {
                 return (
                    <h1>Còn trẻ mà không đi đó đi đây<br/> thì bạn định chờ đến bao giờ nữa.</h1> 
                 )
             }
         }
         return (
-            <header className={ (button === 0 && buttonFunc === 0 && login.isLogin !== 1)  ? "header-main" : "header-main-2"}>
+            <header className={ nguoidung.isLogin == true || giaodien == true ? "header-main-2" : "header-main"}>
                 <Nav />
                 <div className="hero-text-box">
                         {loadTitle()}

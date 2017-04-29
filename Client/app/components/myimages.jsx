@@ -1,64 +1,34 @@
 var React = require('react');
-var {connect} = require('react-redux');
+var { connect } = require('react-redux');
 var actions = require('actions');
-var axios = require('axios');
+var {Link} = require('react-router');
 
+var MyImages = React.createClass({
 
-var myImages = React.createClass({
-    getInitialState: function() {
-        return {
-            images: []
-        }
-    },
-    componentWillMount: function() {
-        var {dispatch, login} = this.props;
-        dispatch(actions.startGetImages());
-    },
-
-    componentDidMount: function() {
-        var {dispatch, login} = this.props;
-        axios.post('http://localhost:8080/api/images/get', {
-            username: login.username
-        }).then(function(res) {
-            if (res.data.error == false) {
-                console.log('Thanh Cong');
-                this.setState({ images: res.data.images});
-                dispatch(actions.completedGetImages(res.data.images));
-            } else {
-                dispatch(actions.failedGetImages());
-            }
-        }.bind(this))
-    },
-
-    render: function() {
-        var {images} = this.state;
-        var {dispatch, handleImages} = this.props;
-        console.log(images);
-        var list = images.map( (image, k) => {
-                    console.log(image);
-                    return (
-                        <li key={k}>
-                            <figure className="images">
-                                <img src={image.url} alt=""/>
-                            </figure>
-                        </li>
-                    )})
-        return (        
-            <section className="section-my-images">
+    render: function () {
+        return (
+            <div className="MyImages">
                 <div className="row">
-                    <h2> Ảnh của bạn</h2>
+                    <div className="column large-2 chucnang">
+                        <div className="menu">
+                            <div className="vertical-menu">
+                                <Link className="active">Chức năng</Link>
+                                <Link to="/images">Ảnh đã đăng</Link>
+                                <Link to="/images/upload">Đăng ảnh</Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="column large-10 hienthi">
+                        {this.props.children}
+                    </div>
                 </div>
-                <ul className="my-images">
-                    {list}
-                </ul>
-               
-            </section>
+            </div>
         )
     }
 });
 
 module.exports = connect(
-    (state) => {
+    state => {
         return state;
     }
-)(myImages);
+)(MyImages);
