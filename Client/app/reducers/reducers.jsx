@@ -63,7 +63,7 @@ export var nguoidungReducer = (state = {isLogin: false,tendangnhap: '', kiemtra:
 }
 
 
-export var ImageReducer = (state = {isUpload: false, dsAnh: [], isSaving: false,isGetting: false, dsAnhDaLuu: []}, action) => {
+export var ImageReducer = (state = {isUpload: false, dsAnh: [], isSaving: false,isGetting: false, dsAnhDaLuu: [], dsAnhNguoiTheoDoi: []}, action) => {
     switch (action.type) {
         case 'BAT_DAU_TAI_ANH':
             return {
@@ -102,11 +102,27 @@ export var ImageReducer = (state = {isUpload: false, dsAnh: [], isSaving: false,
             var update = state.dsAnhDaLuu.filter( (e) => {
                 return e.maanh != action.maanh;
             })
-            //var updateds = Object.create([], update);
             return {
                 ...state,
                 dsAnhDaLuu: update
 
+            }
+         case 'LAY_DS_ANH_NGUOI_TD_TC':
+            console.log(state.dsAnhNguoiTheoDoi);
+            var updateds = state.dsAnhNguoiTheoDoi;
+            if (action.dsAnh.length > 0) {
+                action.dsAnh.forEach(function(element) {
+                    updateds.push(element)
+                }, this);
+            }
+            return {
+                ...state,
+                dsAnhNguoiTheoDoi: updateds
+            }
+         case 'RESET_ANH_THEO_DOI':
+            return {
+                ...state,
+                dsAnhNguoiTheoDoi:[]
             }
         default:
             return state;
@@ -133,21 +149,25 @@ export var diaDanhReducer = (state = {dsDiaDanh: [], tenDiaDanh: ''}, action) =>
 
 
 
-export var usersReducer = (state = {isGetting: false, listUsers: [], followers: []}, action) => {
-    switch (action.type) {
-        case 'GET_LIST_USERS':
-            return state;
-        default: 
-            return state;
-    }
-}
+/// ----- followerReducer -------------///
 
-export var followerReducer = (state ={listFollower: []}, action) => {
+export var theoDoiReducer = (state = {dsGoiY: [], dsDangTheoDoi: []}, action) => {
     switch(action.type) {
-        case 'GET_FOLLOWER':
-            listFollower = action.followers;
+        case 'LAY_NGUOI_THEO_DOI_TC':
+            return {
+                ...state,
+                dsGoiY: action.dsGoiYTheoDoi
+            }
+        case 'LAY_NGUOI_DANG_THEO_DOI_TC':
+            return {
+                ...state,
+                dsDangTheoDoi: action.dsNguoiDangTheoDoi
+            }
+        case 'THEO_DOI_TC':
             return state;
-        default: 
+        case 'HUY_THEO_DOI_TC':
+            return state;
+        default:
             return state;
     }
 }

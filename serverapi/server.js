@@ -31,6 +31,14 @@ db.any('CREATE TABLE IF NOT EXISTS theodoi(matheodoi serial PRIMARY KEY, nguoidu
         .catch(function(error) {
         });
 
+db.any('CREATE TABLE IF NOT EXISTS thich(mathich serial PRIMARY KEY, maanh INT, nguoithich VARCHAR(40), '
+        + 'CONSTRAINT anh_thich FOREIGN KEY (maanh) REFERENCES anh(maanh), ' 
+         + 'CONSTRAINT nguoidung_thich FOREIGN KEY (nguoithich) REFERENCES nguoidung(tendangnhap) )')
+        .then(function(data) {  
+        })
+        .catch(function(error) {
+        });
+
 app.use(bodyParser.json());
 
 app.use(function(req, res, next) {

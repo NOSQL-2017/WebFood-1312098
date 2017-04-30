@@ -1,5 +1,5 @@
 var redux = require('redux');
-var {diaDanhReducer, ImageReducer, nguoidungReducer, giaoDienReducer} = require('reducers');
+var {theoDoiReducer,diaDanhReducer, ImageReducer, nguoidungReducer, giaoDienReducer} = require('reducers');
 var thunk = require('redux-thunk').default;
 
 export var configure = () => {
@@ -7,7 +7,8 @@ export var configure = () => {
         nguoidung: nguoidungReducer,
         Images: ImageReducer,
         giaodien: giaoDienReducer,
-        diadanh: diaDanhReducer
+        diadanh: diaDanhReducer,
+        theodoi: theoDoiReducer
     });
 
     var store = redux.createStore(reducer,redux.applyMiddleware(thunk));

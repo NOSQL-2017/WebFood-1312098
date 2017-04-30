@@ -12,16 +12,6 @@ var UpLoadImage = React.createClass({
         var {dispatch, login} = this.props;
         dispatch(actions.taiAnh(files));
    },
-    handleSave: function() {
-        if (this.state.images.length === 0) {
-            return;
-        }
-        var {dispatch, login} = this.props;
-
-        dispatch(actions.saveImageToPg(login.username, this.state.images));
-        dispatch(actions.resetStateUpload());
-        this.setState({images: []});
-    },
     render: function() {
         var {dispatch, Images} = this.props;
         console.log('ds anh tai len: ', Images.dsAnh);

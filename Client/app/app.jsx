@@ -9,7 +9,7 @@ var Content = require('content');
 var store = require('configureStore').configure();
 var Login = require('Login');
 var Signup = require('Signup');
-var followers = require('follower');
+var Followers = require('followers');
 var MyImages = require('MyImages');
 var ImageLB = require('ImageLB');
 var ImagesUpload = require('ImagesUpload');
@@ -32,7 +32,7 @@ ReactDOM.render(
                     <IndexRoute component={ImageLB} />
                     <Route path="/images/upload" component={ImagesUpload} />
                 </Route>
-                <Route path="/followers" component={followers} />
+                <Route path="/followers" component={Followers} />
             </Route>
         </Router>
     </Provider>,

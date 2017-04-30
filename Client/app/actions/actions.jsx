@@ -248,65 +248,44 @@ export var xoaAnh = (maanh) => {
     }
 }
 
-
-
-
-// Get link images form pg
-
-export var startGetImages = () => {
+export var layAnhNguoiTDTC = (dsAnh) => {
     return {
-        type: 'START_GET_IMAGES'
+        type: 'LAY_DS_ANH_NGUOI_TD_TC',
+        dsAnh
     }
 }
 
-export var completedGetImages = (images) => {
-    return {
-        type: 'COMPLETED_GET_IMAGES',
-        images
-    }
-}
-
-export var failedGetImages = () => {
-    return {
-        type: 'FAILED_GET_IMAGES'
-    }
-}
-
-// get User 
-export var getListUsers = () => {
-    return {
-        type: 'GET_LIST_USERS'
-    }
-}
-
-// followers
-export var Follower = (username, follower) => {
+export var layAnhNguoiTheoDoi = (dsNguoiDangTheoDoi) => {
     return (dispatch, getState) => {
-        axios.post('http://localhost:8080/api/followers', {
-            tenDangNhap: username,
-            follower: follower
-        }).then(function (res) {
-            if (res.data.error == false) {
-                console.log("Thanh Cong");
-            }
+
+        dsNguoiDangTheoDoi.forEach( nguoi => {
+
+            axios.get('http://localhost:8080/api/anh', {
+                params: {
+                   sohuu:  nguoi.nguoitheodoi
+                }
+            })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    console.log(response.data);
+                    if(response.data.dsAnhDaLuu.length > 0) {
+                         dispatch(layAnhNguoiTDTC(response.data.dsAnhDaLuu));
+                    }
+                } else {
+                    
+                }
+            })
         })
+
     }
 }
 
-export var UnFollower = (username, follower) => {
-    return (dispatch, getState) => {
-        axios.delete('http://localhost:8080/api/followers', {
-            params: {
-                tenDangNhap: username,
-                follower: follower
-            }
-        }).then(function (res) {
-            if (res.data.error == false) {
-                console.log("Thanh Cong");
-            }
-        })
+export var resetDsAnhTheoDoi = () => {
+    return {
+        type: 'RESET_ANH_THEO_DOI'
     }
 }
+
 
 //--- dia danh --- //
 
@@ -354,3 +333,97 @@ export var layDiaDanhTheoMa = (madiadanh) => {
             })
     }
 }
+
+
+/// --------------followers ---------------------//
+
+export var layNguoiTheoDoiTC = (dsGoiYTheoDoi) => {
+    return {
+        type: 'LAY_NGUOI_THEO_DOI_TC',
+        dsGoiYTheoDoi
+    }
+}
+
+export var layNguoiTheoDoi = (tendangnhap) => {
+    return (dispatch, getState) => {
+
+        axios.get('http://localhost:8080/api/nguoidung', {
+            params: {tendangnhap}
+        })
+            .then(function(res) {
+                if (res.data.error == false ) {
+                    console.log(res.data.dsGoiYTheoDoi);
+                    dispatch(layNguoiTheoDoiTC(res.data.dsGoiYTheoDoi))
+                }
+            })
+    }
+}
+
+
+export var layNguoiDangTheoDoiTC = (dsNguoiDangTheoDoi) => {
+    return {
+        type: 'LAY_NGUOI_DANG_THEO_DOI_TC',
+        dsNguoiDangTheoDoi
+    }
+}
+
+export var layNguoiDangTheoDoi = (tendangnhap) => {
+    return (dispatch, getState) => {
+        axios.get('http://localhost:8080/api/theodoi',{
+            params: {
+                tendangnhap
+            }
+        })
+            .then(function(res) {
+                if (res.data.error == false ) {
+                    console.log(res.data);
+                    dispatch(layNguoiDangTheoDoiTC(res.data.dsNguoiDangTheoDoi))
+                }
+            })
+    }
+}
+
+export var theoDoiTc = (matheodoi) => {
+    return {
+        type: 'THEO_DOI_TC',
+        matheodoi
+    }
+}
+
+export var theoDoi = (nguoidung, nguoitheodoi) => {
+    return (dispatch, getState) => {
+
+        axios.post('http://localhost:8080/api/theodoi',{
+            nguoidung,
+            nguoitheodoi
+        }).then(function(res) {
+            if (res.data.error == false) {
+                dispatch(theoDoiTc(nguoidung))
+            }
+        })
+    }
+}
+
+
+export var huyTheoDoiTc = (nguoidung) => {
+    return {
+        type: 'HUY_THEO_DOI_TC',
+        nguoidung
+    }
+}
+
+export var huyTheoDoi = (nguoidung, nguoitheodoi) => {
+    return (dispatch, getState) => {
+        axios.delete('http://localhost:8080/api/theodoi', {
+            params: {
+                nguoidung,
+                nguoitheodoi
+            }
+        }).then(function(res) {
+            if (res.data.error == false) {
+                dispatch(huyTheoDoiTc(nguoidung));
+            }
+        })
+    }
+}
+

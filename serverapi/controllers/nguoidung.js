@@ -5,9 +5,9 @@ var db = require('../db');
 
 router.get('/', function(req, res) {
     var tenDangNhap = req.query.tendangnhap;
-    db.any('SELECT tendangnhap, tennguoidung, email  FROM nguoidung where tendangnhap != $1', [tenDangNhap])
+    db.any('SELECT tendangnhap, tennguoidung, email  FROM nguoidung where tendangnhap != $1 and not EXISTS (SELECT 1 from theodoi where nguoidung=$1 and nguoitheodoi=tendangnhap)', [tenDangNhap])
         .then(function(data) {
-             res.send({message: 'Success', error: false, users: data});
+             res.send({message: 'Success', error: false, dsGoiYTheoDoi: data});
         })
         .catch(function(error) {
         });

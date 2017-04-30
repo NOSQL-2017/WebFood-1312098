@@ -2,99 +2,78 @@ var React = require('react');
 var { connect } = require('react-redux');
 var actions = require('actions');
 var axios = require('axios');
+var HomeImages = require('homeImages');
 
 var home = React.createClass({
-    componentWillMount: function () {
+    getInitialState: function() {
+        return {
+            dsTheoDoi: []
+        }
     },
-    componentDidMount: function () {
-        // var { dispatch, login } = this.props;
-        // var { followers, images } = this.state;
-        // axios.get('http://localhost:8080/api/followers', {
-        //     params: {
-        //         tenDangNhap: login.username
-        //     }
-        // }).then(function (res) {
-        //     if (res.data.error == false) {
-        //         var temp = res.data.followers;
-        //         this.setState({
-        //             followers: res.data.followers
-        //         });
-        //         for (var i = 0; i < temp.length; i++) {
-        //             console.log(temp[i].follower);
-        //             axios.get('http://localhost:8080/api/images', {
-        //                 params: {
-        //                     tenDangNhap: temp[i].follower
-        //                 }
-        //             }).then(function (res) {
-        //                 var updateImages = Object.assign([], this.state.images, res.data.images);
-        //                 this.setState({
-        //                     images: updateImages
-        //                 })
-        //             }.bind(this));
-        //         }
-        //     }
-        // }.bind(this))
-
-
+    componentWillMount: function() {
+        var {theodoi, dispatch , nguoidung} = this.props;
+        dispatch(actions.layNguoiDangTheoDoi(nguoidung.tendangnhap));
     },
-    handleUnFollower: function () {
-
+    componentWillUpdate: function(nextProps, nextState) {
+        var {dispatch} = this.props;
+        if (nextProps.theodoi.dsDangTheoDoi.length != this.props.theodoi.dsDangTheoDoi.length) {
+            dispatch(actions.layAnhNguoiTheoDoi(nextProps.theodoi.dsDangTheoDoi));
+        }
+    }, 
+    handleClick: function() {
+        var {dispatch, nguoidung} = this.props;
+        console.log(this.refs.nguoitheodoi.value);
+        dispatch(actions.huyTheoDoi(this.refs.nguoitheodoi.value, nguoidung.tendangnhap));
     },
     render: function () {
-        /*var { login } = this.props;
-        var { images, followers } = this.state;
-        console.log(images);
-        console.log(followers);
-        var listImages = images.map((image, k) => {
-            return (
-                <ul key={k}>
-                    <li >
-                        <div className="infor-images">
-                            <h5>{image.username}</h5>
+        var {nguoidung, dispatch, theodoi, Images} = this.props;
+        var {dsTheoDoi} = this.state;
+        var that = this;
+        var luotTheoDoi = 19999;
+        var hienThiDanhSachNguoiDangTheoDoi = () => {
+            if (theodoi.dsDangTheoDoi.length > 0) {
+                return theodoi.dsDangTheoDoi.map ( (td, k) => {
+                    return (
+                        <div key={k} className="dsTheoDoi">
+                            <h5><strong>{td.nguoitheodoi}</strong></h5>
+                            <button value={td.nguoitheodoi} ref="nguoitheodoi" className="button small radius" onClick={that.handleClick}>Hủy theo dõi</button>
                         </div>
-                        <img src={image.url} alt="" />
-                        <div className="like">
-                            Like : DisLike
-                            </div>
-                    </li>
-                </ul>
-            )
-        })*/
-        /*var listFollowers = followers.map((follower, k) => {
-            return (
-                <ul key={k}>
-                    <li className="name-follower">
-                        <p>{follower.follower}</p>
-                    </li>
-                    <li>
-                        <button className="btn-Unfollower"> Unfollow</button>
-                    </li>
-                </ul>
-            )
-        })*/
-        return (
-            <section className="section-home">
-                <div className="" row>
-                    <div className="images col span_4_of_7 box">
-                        {/*{images.length === 0 ? <h3>Theo dõi nhiều người để có nhiều ảnh hơn</h3> : listImages}*/}
-                    </div>
-                    <div className="information span_2_of_7 box">
-                        <div className="person-infor">
-                            <h4>Thông tin cá nhân</h4>
-                            <div>
-                                <p></p>
-                                <p>Email: dungvatoi12@gmail.com</p>
-                                <p>So luot theo doi: 10000</p>
-                            </div>
+                    )
+                })
+            }
+            return <h4>Bạn chưa theo dõi ai cả</h4>
+        }
 
+        var hienThiAnh = () => {
+            if (Images.dsAnhNguoiTheoDoi.length > 0) {
+                return Images.dsAnhNguoiTheoDoi.map ( (anh, k) => {
+                    return <HomeImages anh={anh} key={k} />
+                })
+            }
+            return <h2>Chưa có ảnh nào cả.</h2>
+        }
+        return (
+            <div className="home">
+                <div className="row">
+                    <div className="column large-8 details">
+                        {hienThiAnh()}   
+                    </div>
+
+                    <div className="column large-3 information">
+                        <div className="row">
+                            <h3>Thông tin cá nhân</h3>
+                            <p>{nguoidung.tendangnhap}</p>
+                            <p>{nguoidung.email}</p>
+                            <p><strong>Lượt theo dõi:</strong> {luotTheoDoi}</p>
                         </div>
-                        <div className="person-follower">
-                            <h4>Đã theo dõi:</h4>
-                            {/*{listFollowers}*/}
+                        <div className="row td">
+                            <h3>Danh sách theo dõi</h3>
+                            {hienThiDanhSachNguoiDangTheoDoi()}
                         </div>
                     </div>
                 </div>
-            </section>)
+            </div>
+        )
     }
 });
 

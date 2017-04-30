@@ -1,105 +1,57 @@
 var React = require('react');
-var {connect} = require('react-redux');
+var { connect } = require('react-redux');
 var actions = require('actions');
 var axios = require('axios');
 
 var follower = React.createClass({
     getInitialState: function() {
         return {
-            friends: [],
-            followers: [],
-            tempFollower: []
+            btnFollower: false
         }
     },
-    componentDidMount: function() {
-        var {dispatch, login} = this.props;
-         axios.get('http://localhost:8080/api/followers', {
-             params: {
-                tenDangNhap: login.username
-            }
-        }).then(function(res) {
-            if (res.data.error == false) {
-                this.setState({
-                    followers: res.data.followers});
-            } 
-        }.bind(this))
-
-        axios.get('http://localhost:8080/api/users', {
-            params: {
-                tenDangNhap: login.username
-            }
-        }).then(function(res) {
-                if (res.data.error === false) {
-                    var users = res.data.users;
-                    this.setState({friends: users})
-                }
-            }.bind(this))
-
-       
-        
-    },
-    handleClickFollow: function(follower) {
-        var {dispatch, login} = this.props;
-        var updateTemp = Object.assign([], this.state.tempFollower);
-        updateTemp.push(follower);
-
-        dispatch(actions.Follower(login.username, follower));
+    handleClickHuyTheoDoi: function() {
+        var {nguoi, dispatch, nguoidung} = this.props;
+        dispatch(actions.huyTheoDoi( nguoi.tendangnhap,nguoidung.tendangnhap));
         this.setState({
-            tempFollower: updateTemp
+            btnFollower: false
         })
-        
     },
-    handleClickUnFollow: function(follower) {
-        var {dispatch, login} = this.props;
-        var updateTemp = Object.assign([], this.state.tempFollower);
-        var index = updateTemp.indexOf(follower);
-        dispatch(actions.UnFollower(login.username, follower));
-        updateTemp.splice(index,1);
+    handleClickTheoDoi: function() {
+        var {nguoi, dispatch, nguoidung} = this.props;
+        dispatch(actions.theoDoi(nguoi.tendangnhap, nguoidung.tendangnhap));
         this.setState({
-            tempFollower: updateTemp
+            btnFollower: true
         })
-    },
-    render: function() {
-        var {friends, followers, tempFollower} = this.state;
-        var temp = Object.assign([], followers);
-        friends = friends.filter(function(e) {
-            var kq = 0;
-            for (var i = 0; i < temp.length; i++) {
-                if(temp[i].follower === e.username) {
-                    kq = 1;
-                    break;
-                }
-            }
-            return kq === 0;
-        })
-        
-        var list = friends.map((friend, k) => {
-            var temp = Object.assign([],tempFollower);
-            return (
-                <ul  key={k}>
-                    <li><label htmlFor="name">Họ tên:   </label><p name="name">{friend.tennguoidung}</p> 
-                    {    
-                            temp.indexOf(friend.username) == -1 ?
-                                        <button className="btn-follower" onClick={() => {this.handleClickFollow(friend.username)}}>followers</button>
-                                       : <button className="btn-follower" onClick={() => {this.handleClickUnFollow(friend.username)}}>Unfollowers</button>
 
-                    }
-                    </li>
-                    <li> <label htmlFor="email">Email:  </label><p name="email">{friend.email} </p></li>
-                    <li>Số người theo dõi: 100000</li>
-                </ul>
-             
-            )
-        })
+    },
+    render: function () {
+        var {nguoi, dispatch} = this.props;
+        var {btnFollower} = this.state;
+        var that = this;
+        var hienThiBtn = function() {
+            if (btnFollower == false) {
+                return  <button onClick={that.handleClickTheoDoi} className="button">Theo dõi</button>
+            }
+            return   <button onClick={that.handleClickHuyTheoDoi} className="button">Hủy theo dõi</button>
+        }
         return (
-            <section className="row section-followers">
-                <h2>Tìm bạn bè</h2>
-                <div className="row">
-                    <div className="col span_2_of_3 box">
-                         {list}
+            <div className="column large-4">
+                    <div className="about-the-author">
+                        <h3 className="author-title">Thông tin</h3>
+                        <div className="row">
+                            <div className="small-12 medium-4 columns">
+                                <div className="author-image">
+                                    <img src={nguoi.anhdaidien} />
+                                </div>
+                            </div>
+                            <div className="small-12 medium-8 columns">
+                                <h4 className="separator-left">{nguoi.tennguoidung}</h4>
+                                <p>{nguoi.email}</p>
+                                {hienThiBtn()}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </section>
+            </div>
         )
     }
 });
