@@ -15,6 +15,13 @@ db.any('CREATE TABLE IF NOT EXISTS diadanh(madiadanh VARCHAR(40) PRIMARY KEY, te
         .catch(function(error) {
         });
 
+db.any('INSERT INTO diadanh values ($1,$2)',['HG', 'Hà Giang'])
+db.any('INSERT INTO diadanh values ($1,$2)',['TH', 'Thanh Hóa'])
+db.any('INSERT INTO diadanh values ($1,$2)',['PY', 'Phú Yên'])
+
+
+
+
 db.any('CREATE TABLE IF NOT EXISTS anh(maanh serial PRIMARY KEY, url text, camnhan VARCHAR(350), sohuu VARCHAR(40), madiadanh VARCHAR(40), soluotthich INT,'+ 
                 ' CONSTRAINT anh_nguoidung FOREIGN KEY (sohuu) REFERENCES nguoidung(tendangnhap),'+ 
                 ' CONSTRAINT anh_diadanh FOREIGN KEY (madiadanh) REFERENCES diadanh(madiadanh)   )')

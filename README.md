@@ -27,6 +27,7 @@ Các **yêu cầu chức năng** (check và ghi MSSV vào các phần chức nă
 * [x] Đăng ảnh.
 * [x] Đăng nhập.
 * [x] Theo dõi người dùng.
+* [x] WEB API.
 
 
 ## Demo

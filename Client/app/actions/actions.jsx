@@ -171,19 +171,19 @@ export var luuAnhThanhCong = (url) => {
 }
 
 
-export var luuAnh = (url, sohuu, camnhan, diadanh ) => {
+export var luuAnh = (url, sohuu, camnhan, diadanh) => {
     return (dispatch, getState) => {
         axios.post('http://localhost:8080/api/anh', {
-           url,
-           sohuu,
-           camnhan,
-           diadanh
+            url,
+            sohuu,
+            camnhan,
+            diadanh
         })
             .then(function (response) {
                 if (response.data.error == false) {
                     dispatch(luuAnhThanhCong(url));
                 } else {
-                    
+
                 }
             })
     }
@@ -205,15 +205,15 @@ export var layAnhThanhCong = (dsAnhDaLuu) => {
 export var layAnh = (sohuu) => {
     return (dispatch, getState) => {
         axios.get('http://localhost:8080/api/anh', {
-          params: {
-              sohuu
-          }
+            params: {
+                sohuu
+            }
         })
             .then(function (response) {
                 if (response.data.error == false) {
                     dispatch(layAnhThanhCong(response.data.dsAnhDaLuu));
                 } else {
-                    
+
                 }
             })
     }
@@ -236,9 +236,9 @@ export var xoaAnhThanhCong = (maanh) => {
 export var xoaAnh = (maanh) => {
     return (dispatch, getState) => {
         axios.delete('http://localhost:8080/api/anh', {
-          params: {
-              maanh
-          }
+            params: {
+                maanh
+            }
         })
             .then(function (response) {
                 if (response.data.error == false) {
@@ -255,26 +255,33 @@ export var layAnhNguoiTDTC = (dsAnh) => {
     }
 }
 
+export var resetAnhNguoiTD = () => {
+    return {
+        type: 'RESET_ANH_NGUOI_TD'
+    }
+}
+
 export var layAnhNguoiTheoDoi = (dsNguoiDangTheoDoi) => {
     return (dispatch, getState) => {
 
-        dsNguoiDangTheoDoi.forEach( nguoi => {
+        dispatch(resetAnhNguoiTD());
+
+        dsNguoiDangTheoDoi.forEach(nguoi => {
 
             axios.get('http://localhost:8080/api/anh', {
                 params: {
-                   sohuu:  nguoi.nguoitheodoi
+                    sohuu: nguoi.nguoitheodoi
                 }
             })
-            .then(function (response) {
-                if (response.data.error == false) {
-                    console.log(response.data);
-                    if(response.data.dsAnhDaLuu.length > 0) {
-                         dispatch(layAnhNguoiTDTC(response.data.dsAnhDaLuu));
+                .then(function (response) {
+                    if (response.data.error == false) {
+                        if (response.data.dsAnhDaLuu.length > 0) {
+                            dispatch(layAnhNguoiTDTC(response.data.dsAnhDaLuu));
+                        }
+                    } else {
+
                     }
-                } else {
-                    
-                }
-            })
+                })
         })
 
     }
@@ -285,6 +292,8 @@ export var resetDsAnhTheoDoi = () => {
         type: 'RESET_ANH_THEO_DOI'
     }
 }
+
+
 
 
 //--- dia danh --- //
@@ -298,12 +307,12 @@ export var layDsDiaDanhTc = (dsDiaDanh) => {
 
 export var layDsDiaDanh = () => {
     return (dispatch, getState) => {
-         axios.get('http://localhost:8080/api/diadanh')
+        axios.get('http://localhost:8080/api/diadanh')
             .then(function (response) {
                 if (response.data.error == false) {
                     dispatch(layDsDiaDanhTc(response.data.dsDiaDanh));
                 } else {
-                    
+
                 }
             })
     }
@@ -318,17 +327,17 @@ export var layDiaDanhTheoMaTC = (tenDiaDanh) => {
 }
 
 export var layDiaDanhTheoMa = (madiadanh) => {
-     return (dispatch, getState) => {
-         axios.get('http://localhost:8080/api/diadanh/id', {
-             params: {
-                 madiadanh
-             }
-         })
+    return (dispatch, getState) => {
+        axios.get('http://localhost:8080/api/diadanh/id', {
+            params: {
+                madiadanh
+            }
+        })
             .then(function (response) {
                 if (response.data.error == false) {
                     dispatch(layDiaDanhTheoMaTC(response.data.tendiadanh['0'].tendiadanh));
                 } else {
-                    
+
                 }
             })
     }
@@ -348,10 +357,10 @@ export var layNguoiTheoDoi = (tendangnhap) => {
     return (dispatch, getState) => {
 
         axios.get('http://localhost:8080/api/nguoidung', {
-            params: {tendangnhap}
+            params: { tendangnhap }
         })
-            .then(function(res) {
-                if (res.data.error == false ) {
+            .then(function (res) {
+                if (res.data.error == false) {
                     console.log(res.data.dsGoiYTheoDoi);
                     dispatch(layNguoiTheoDoiTC(res.data.dsGoiYTheoDoi))
                 }
@@ -369,13 +378,13 @@ export var layNguoiDangTheoDoiTC = (dsNguoiDangTheoDoi) => {
 
 export var layNguoiDangTheoDoi = (tendangnhap) => {
     return (dispatch, getState) => {
-        axios.get('http://localhost:8080/api/theodoi',{
+        axios.get('http://localhost:8080/api/theodoi', {
             params: {
                 tendangnhap
             }
         })
-            .then(function(res) {
-                if (res.data.error == false ) {
+            .then(function (res) {
+                if (res.data.error == false) {
                     console.log(res.data);
                     dispatch(layNguoiDangTheoDoiTC(res.data.dsNguoiDangTheoDoi))
                 }
@@ -393,10 +402,10 @@ export var theoDoiTc = (matheodoi) => {
 export var theoDoi = (nguoidung, nguoitheodoi) => {
     return (dispatch, getState) => {
 
-        axios.post('http://localhost:8080/api/theodoi',{
+        axios.post('http://localhost:8080/api/theodoi', {
             nguoidung,
             nguoitheodoi
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(theoDoiTc(nguoidung))
             }
@@ -419,7 +428,7 @@ export var huyTheoDoi = (nguoidung, nguoitheodoi) => {
                 nguoidung,
                 nguoitheodoi
             }
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(huyTheoDoiTc(nguoidung));
             }
@@ -427,3 +436,85 @@ export var huyTheoDoi = (nguoidung, nguoitheodoi) => {
     }
 }
 
+
+export var demNguoiTheoDoiTC = (soLuong) => {
+    return {
+        type: 'DEM_NGUOI_THEO_DOI',
+        soLuong
+    }
+}
+
+export var demNguoiTheoDoi = (nguoitheodoi) => {
+    return (dispatch, getState) => {
+
+        axios.get('http://localhost:8080/api/theodoi/dem', {
+            params: {
+               nguoitheodoi
+            }
+        })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(demNguoiTheoDoiTC(response.data.soLuong));
+                } else {
+
+                }
+            })
+    }
+}
+
+// ---- thich anh ---- //
+
+export var thichAnhTC = () => {
+    return {
+        type: 'THICH_ANH_TC'
+    }
+}
+
+export var thichAnh = (maanh, nguoithich) => {
+    return (dispatch, getState) => {
+        axios.post('http://localhost:8080/api/thich', {
+            maanh,
+            nguoithich
+        }).then(function (res) {
+            if (res.data.error == false) {
+                dispatch(thichAnhTC());
+            }
+        })
+
+    }
+}
+
+export var huyThichAnhTC = () => {
+    return {
+        type: 'HUY_THICH_ANH'
+    }
+}
+
+export var huyThichAnh = (maanh, nguoithich) => {
+    return (dispatch, getState) => {
+         axios.delete('http://localhost:8080/api/thich', {
+           params: {
+                maanh,
+                nguoithich
+           }
+        }).then(function (res) {
+            if (res.data.error == false) {
+                dispatch(huyThichAnhTC());
+            }
+        })
+    }
+}
+
+export var demSoLuongThichAnh = (maanh) => {
+    return (dispatch, getState) => {
+         axios.get('http://localhost:8080/api/thich/dem', {
+           params: {
+                maanh    
+           }
+        }).then(function (res) {
+            if (res.data.error == false) {
+                
+            }
+        })
+    }
+}

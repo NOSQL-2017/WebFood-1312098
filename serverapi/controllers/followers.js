@@ -9,8 +9,18 @@ router.get('/', function(req, res) {
 
     db.any('SELECT nguoitheodoi FROM theodoi where nguoidung=$1 ',[tendangnhap])
         .then(function(data) {
-            console.log(data);
              res.send({message: 'Success', error: false, dsNguoiDangTheoDoi: data});
+        })
+        .catch(function(error) {
+        });
+})
+
+router.get('/dem', function(req, res) {
+    var nguoitheodoi = req.query.nguoitheodoi;
+
+    db.any('SELECT count(nguoidung) FROM theodoi where nguoitheodoi=$1 ',[nguoitheodoi])
+        .then(function(data) {
+             res.send({message: 'Success', error: false, soLuong: data['0'].count});
         })
         .catch(function(error) {
         });

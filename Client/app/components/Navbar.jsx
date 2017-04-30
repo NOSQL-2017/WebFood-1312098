@@ -7,7 +7,6 @@ var actions = require('actions');
 var Nav = React.createClass({
     handleClick: function() {
         var {dispatch} = this.props;
-        dispatch(actions.resetDsAnhTheoDoi());
         dispatch(actions.dangXuat());
     },
     render: function() {

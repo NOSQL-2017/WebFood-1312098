@@ -3,6 +3,7 @@ var { connect } = require('react-redux');
 var actions = require('actions');
 var axios = require('axios');
 var HomeImages = require('homeImages');
+var HomeFollower = require('homeFollower');
 
 var home = React.createClass({
     getInitialState: function() {
@@ -13,31 +14,26 @@ var home = React.createClass({
     componentWillMount: function() {
         var {theodoi, dispatch , nguoidung} = this.props;
         dispatch(actions.layNguoiDangTheoDoi(nguoidung.tendangnhap));
+        dispatch(actions.demNguoiTheoDoi(nguoidung.tendangnhap))
     },
     componentWillUpdate: function(nextProps, nextState) {
         var {dispatch} = this.props;
         if (nextProps.theodoi.dsDangTheoDoi.length != this.props.theodoi.dsDangTheoDoi.length) {
+            console.log('call');
             dispatch(actions.layAnhNguoiTheoDoi(nextProps.theodoi.dsDangTheoDoi));
         }
-    }, 
-    handleClick: function() {
-        var {dispatch, nguoidung} = this.props;
-        console.log(this.refs.nguoitheodoi.value);
-        dispatch(actions.huyTheoDoi(this.refs.nguoitheodoi.value, nguoidung.tendangnhap));
     },
     render: function () {
         var {nguoidung, dispatch, theodoi, Images} = this.props;
         var {dsTheoDoi} = this.state;
         var that = this;
-        var luotTheoDoi = 19999;
+
+        var luotTheoDoi = theodoi.soNguoiTheoDoi;
         var hienThiDanhSachNguoiDangTheoDoi = () => {
             if (theodoi.dsDangTheoDoi.length > 0) {
                 return theodoi.dsDangTheoDoi.map ( (td, k) => {
                     return (
-                        <div key={k} className="dsTheoDoi">
-                            <h5><strong>{td.nguoitheodoi}</strong></h5>
-                            <button value={td.nguoitheodoi} ref="nguoitheodoi" className="button small radius" onClick={that.handleClick}>Hủy theo dõi</button>
-                        </div>
+                        <HomeFollower key={k} td={td} />
                     )
                 })
             }

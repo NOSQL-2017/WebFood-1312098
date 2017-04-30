@@ -107,6 +107,11 @@ export var ImageReducer = (state = {isUpload: false, dsAnh: [], isSaving: false,
                 dsAnhDaLuu: update
 
             }
+        case 'RESET_ANH_NGUOI_TD':
+            return {
+                ...state,
+                dsAnhNguoiTheoDoi: []
+            }
          case 'LAY_DS_ANH_NGUOI_TD_TC':
             console.log(state.dsAnhNguoiTheoDoi);
             var updateds = state.dsAnhNguoiTheoDoi;
@@ -151,7 +156,7 @@ export var diaDanhReducer = (state = {dsDiaDanh: [], tenDiaDanh: ''}, action) =>
 
 /// ----- followerReducer -------------///
 
-export var theoDoiReducer = (state = {dsGoiY: [], dsDangTheoDoi: []}, action) => {
+export var theoDoiReducer = (state = {dsGoiY: [], dsDangTheoDoi: [], soNguoiTheoDoi: 0}, action) => {
     switch(action.type) {
         case 'LAY_NGUOI_THEO_DOI_TC':
             return {
@@ -164,9 +169,22 @@ export var theoDoiReducer = (state = {dsGoiY: [], dsDangTheoDoi: []}, action) =>
                 dsDangTheoDoi: action.dsNguoiDangTheoDoi
             }
         case 'THEO_DOI_TC':
-            return state;
+           return state;
         case 'HUY_THEO_DOI_TC':
-            return state;
+            console.log(state.dsDangTheoDoi);
+              var update = state.dsDangTheoDoi.filter( e => {
+                return e.nguoitheodoi !== action.nguoidung;
+            })
+            console.log('update ds theo doi', update)
+                return {
+                    ...state,
+                    dsDangTheoDoi: update
+                }
+        case 'DEM_NGUOI_THEO_DOI':
+            return {
+                ...state,
+                soNguoiTheoDoi: action.soLuong
+            }
         default:
             return state;
     }
