@@ -10,6 +10,22 @@ var HomeImages = React.createClass({
             soLuongLike: 0
         }
     },
+    componentWillUpdate: function(nextProps, nextState) {
+        var {dispatch, anh} = this.props;
+        if (nextState.like != this.state.like) {
+            axios.get('http://localhost:8080/api/thich/dem', {
+            params: {
+                maanh: anh.maanh
+            }
+            }).then(function (res) {
+                if (res.data.error == false) {
+                    this.setState({
+                        soLuongLike: res.data.soluotthich
+                    })
+                }
+            }.bind(this))
+        }
+    },
     componentWillMount: function () {
         var {anh, nguoidung} = this.props;
         axios.get('http://localhost:8080/api/thich/dem', {

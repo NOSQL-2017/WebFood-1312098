@@ -43,7 +43,7 @@ var Signup = React.createClass({
                 </div>)
             } else if (nguoidung.dangky == 2) {
                 return (
-                    <div data-closable class="callout alert-callout-subtle alert">
+                    <div data-closable className="callout alert-callout-subtle alert">
                         <strong>Yo!</strong> Tên đăng nhập đã tồn tại 
                     </div>
                 )

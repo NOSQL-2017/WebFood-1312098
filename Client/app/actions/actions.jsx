@@ -98,6 +98,11 @@ export var dangKy = (tendangnhap, hoten, email, matkhau) => {
 
 
 // upload images
+export var resetImageRedecer = () => {
+    return {
+        type: 'RESET_IMAGE_REDUCER'
+    }
+}
 
 export var batDauTaiAnh = () => {
     return {
@@ -345,6 +350,11 @@ export var layDiaDanhTheoMa = (madiadanh) => {
 
 
 /// --------------followers ---------------------//
+export var resetTheoDoiReducer = () => {
+    return {
+        type: 'RESET_THEO_DOI_REDUCER'
+    }
+}
 
 export var layNguoiTheoDoiTC = (dsGoiYTheoDoi) => {
     return {

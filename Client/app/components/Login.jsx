@@ -37,19 +37,14 @@ var Login = React.createClass({
                 return (
                     <div data-closable className="callout alert-callout-subtle primary radius">
                         <strong>Yo!</strong> Kiểm tra tài khoản ....
-                    <button className="close-button" aria-label="Dismiss alert" type="button" data-close>
-                            <span aria-hidden="true">⊗</span>
-                        </button>
                     </div>
                 )
 
             } else if (nguoidung.dangnhap == 2) {
                 return (
-                    <div data-closable class="callout alert-callout-subtle alert">
+                    <div data-closable className="callout alert-callout-subtle alert">
                         <strong>Yo!</strong> Tên đăng nhập hoặc mật khẩu sai
-                        <button className="close-button" aria-label="Dismiss alert" type="button" data-close>
-                            <span aria-hidden="true">⊗</span>
-                        </button>
+
                     </div>
                 )
             }

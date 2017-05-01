@@ -65,6 +65,17 @@ export var nguoidungReducer = (state = {isLogin: false,tendangnhap: '', kiemtra:
 
 export var ImageReducer = (state = {isUpload: false, dsAnh: [], isSaving: false,isGetting: false, dsAnhDaLuu: [], dsAnhNguoiTheoDoi: []}, action) => {
     switch (action.type) {
+        case 'RESET_IMAGE_REDUCER': 
+            return {
+                ...state,
+                isUpload: false,
+                dsAnh: [],
+                isSaving: false,
+                isGetting: false, 
+                dsAnhDaLuu: [], 
+                dsAnhNguoiTheoDoi: []
+
+            }
         case 'BAT_DAU_TAI_ANH':
             return {
                 ...state,
@@ -158,6 +169,12 @@ export var diaDanhReducer = (state = {dsDiaDanh: [], tenDiaDanh: ''}, action) =>
 
 export var theoDoiReducer = (state = {dsGoiY: [], dsDangTheoDoi: [], soNguoiTheoDoi: 0}, action) => {
     switch(action.type) {
+        case 'RESET_THEO_DOI_REDUCER':
+            return {
+                dsGoiY: [], 
+                dsDangTheoDoi: [], 
+                soNguoiTheoDoi: 0
+            }
         case 'LAY_NGUOI_THEO_DOI_TC':
             return {
                 ...state,

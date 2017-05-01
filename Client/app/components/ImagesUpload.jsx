@@ -14,7 +14,6 @@ var UpLoadImage = React.createClass({
    },
     render: function() {
         var {dispatch, Images} = this.props;
-        console.log('ds anh tai len: ', Images.dsAnh);
         var hienThiAnh = function() {
             if (Images.dsAnh.length > 0 ) {
                 return Images.dsAnh.map( (anh, k) => {
