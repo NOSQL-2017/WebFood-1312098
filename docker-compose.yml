@@ -1,5 +1,17 @@
-version: '3'
+version: '2'
 services:
+  web1:
+    restart: always
+    build: ./serverapi
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./serverapi:/usr/src/doancuoiki/serverapi
+    links:
+      - db
+    depends_on:
+      - "db"
+    command: ["./wait-for-it.sh", "db:5432", "--", "node server.js"]
   db:
     image: postgres
     ports:
@@ -14,15 +26,5 @@ services:
       - "3000:3000"
     volumes:
       - ./Client:/usr/src/doancuoiki/Client
-    links: 
-      - webapi 
-  webapi:
-    build: ./serverapi
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./serverapi:/usr/src/doancuoiki/serverapi
     links:
-      - db
-    depends_on:
       - db
