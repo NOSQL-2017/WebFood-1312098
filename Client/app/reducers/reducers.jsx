@@ -10,7 +10,7 @@ export var giaoDienReducer = (state = false, action ) => {
     }
 }
 
-export var nguoidungReducer = (state = {isLogin: false,tendangnhap: '', kiemtra: false, dangky: 0, dangnhap: 0 }, action) => {
+export var nguoidungReducer = (state = {isLogin: false,tendangnhap: '', kiemtra: false, dangky: 0, dangnhap: 0 ,thongtin:{}, totalFollowing: 0, totalFollowers: 0}, action) => {
     switch(action.type) {
         case 'KIEM_TRA_DANG_KY':
             return {
@@ -56,6 +56,21 @@ export var nguoidungReducer = (state = {isLogin: false,tendangnhap: '', kiemtra:
                 isLogin: false,
                 dangnhap: 0,
                 dangky: 0
+            }
+        case 'LAY_THONG_TIN_NGUOI_DUNG_TC': 
+            return {
+                ...state,
+                thongtin: action.nguoidung
+            }
+        case 'COUNT_FOLLOWERS': 
+            return {
+                ...state,
+                totalFollowers: action.total
+            }
+        case 'COUNT_FOLLOWING':
+            return {
+                ...state,
+                totalFollowing: action.total
             }
         default: 
             return state;
@@ -151,11 +166,6 @@ export var diaDanhReducer = (state = {dsDiaDanh: [], tenDiaDanh: ''}, action) =>
             return {
                 ...state,
                 dsDiaDanh: action.dsDiaDanh
-            }
-        case 'LAY_DIA_DANH_THEO_MA':
-            return {
-                ...state,
-                tenDiaDanh: action.tenDiaDanh
             }
         default:
             return state;

@@ -16,14 +16,24 @@ var Nav = React.createClass({
         var that = this;
         var hienThiChucNangDNTC = function() {
             if (nguoidung.isLogin == true) {
-                return (
-                    <ul className="main-nav">
-                        <li> <Link to="/">Trang chủ</Link></li>
-                        <li><Link to="/followers" >Tìm bạn bè</Link></li>              
-                        <li> <Link to="/images" >Ảnh của tôi</Link></li>
-                        <li onClick={that.handleClick}> <Link to="/" >Đăng Xuất</Link></li>
-                    </ul>
-                )
+                if (nguoidung.tendangnhap == "admin") {
+                    return (
+                        <ul className="main-nav">
+                            <li> <Link to="/admin">Thêm địa danh</Link></li>
+                            <li onClick={that.handleClick}> <Link to="/" >Đăng Xuất</Link></li>
+                        </ul>
+                    )
+                } else {
+                    return (
+                        <ul className="main-nav">
+                            <li> <Link to="/">Trang chủ</Link></li>
+                            <li><Link to="/followers" >Tìm bạn bè</Link></li>              
+                            <li> <Link to="/images" >Ảnh của tôi</Link></li>
+                            <li onClick={that.handleClick}> <Link to="/" >Đăng Xuất</Link></li>
+                        </ul>
+                    )
+                }
+                
             } else if (nguoidung.isLogin == false) {
                 return (
                      <ul className="main-nav">
@@ -37,7 +47,6 @@ var Nav = React.createClass({
         return (
             <div className="row ">
                     <img src="resources/img/logo2.png" alt="logo" className="logo"/>  
-                          
                      {hienThiChucNangDNTC()}
             </div>
         )

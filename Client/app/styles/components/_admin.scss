@@ -1,0 +1,46 @@
+.admin {
+    margin-top: 50px;
+    h3 {
+        font-weight: 400;
+    }
+    .ds {
+        background-color: #fbfbfb;
+    }
+    .diadanh-form {
+            padding: 7px;
+            background-color: #fbfbfb;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            border: 1px solid #dfe4e4;
+    }
+    .scoll-dsdiadanh {
+        
+        display: block;
+        height: 300px;
+        overflow: auto;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+    .dsdiadanh {
+        width: 300px;
+        display: inline-block;
+        border-bottom: 1px solid #bdc3c7;
+        padding: 10px;
+        height: 60px;
+        margin-left: 20px;
+
+        h5 {
+            float: left;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+        button {
+            float: right;
+            border-radius: 5px;
+            font-size: 70%;
+            font-weight: 900;
+            padding: 10px;
+        }
+    }
+    
+}

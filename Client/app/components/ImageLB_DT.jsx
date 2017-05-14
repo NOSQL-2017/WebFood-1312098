@@ -12,28 +12,25 @@ var ImageLB_DT = React.createClass({
     },
     componentWillMount: function() {
         var {dispatch, anh} = this.props;
-         axios.get('http://localhost:8080/api/diadanh/id', {
-            params: {
-                madiadanh: anh.madiadanh
-            }
-            })
-            .then(function (response) {
+         axios.get('http://localhost:8082/api/diadanh/layDiaDanhTheoMa', {
+                params: {
+                    madiadanh: anh.madiadanh
+                }
+            }).then(function (response) {
                 if (response.data.error == false) {
                     this.setState({
-                        tenDiaDanh: response.data.tendiadanh['0'].tendiadanh
+                        tenDiaDanh: response.data.tendiadanh
                     })
-                } else {
-
                 }
         }.bind(this))
-         axios.get('http://localhost:8080/api/thich/dem', {
+         axios.get('http://localhost:8081/api/thichanh/countlike', {
             params: {
-                maanh: anh.maanh
+                images_id: anh.maanh
             }
         }).then(function (res) {
             if (res.data.error == false) {
                 this.setState({
-                    soLuongLike: res.data.soluotthich
+                    soLuongLike: res.data.soluotthich || 0
                 })
             }
         }.bind(this))

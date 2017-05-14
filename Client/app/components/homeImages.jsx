@@ -13,9 +13,9 @@ var HomeImages = React.createClass({
     componentWillUpdate: function(nextProps, nextState) {
         var {dispatch, anh} = this.props;
         if (nextState.like != this.state.like) {
-            axios.get('http://localhost:8080/api/thich/dem', {
+            axios.get('http://localhost:8081/api/thichanh/countlike', {
             params: {
-                maanh: anh.maanh
+                images_id: anh.maanh
             }
             }).then(function (res) {
                 if (res.data.error == false) {
@@ -28,9 +28,9 @@ var HomeImages = React.createClass({
     },
     componentWillMount: function () {
         var {anh, nguoidung} = this.props;
-        axios.get('http://localhost:8080/api/thich/dem', {
+        axios.get('http://localhost:8081/api/thichanh/countlike', {
             params: {
-                maanh: anh.maanh
+                images_id: anh.maanh
             }
         }).then(function (res) {
             if (res.data.error == false) {
@@ -40,11 +40,11 @@ var HomeImages = React.createClass({
             }
         }.bind(this))
 
-         axios.get('http://localhost:8080/api/thich/kiemtra', {
-            params: {
-                maanh: anh.maanh,
-                nguoithich: nguoidung.tendangnhap
-            }
+         axios.get('http://localhost:8081/api/thichanh/checklike', {
+                params: {
+                    images_id: anh.maanh,
+                    username: nguoidung.tendangnhap
+                }
             }).then(function (res) {
                 if (res.data.error == false) {
                     this.setState({

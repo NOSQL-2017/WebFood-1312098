@@ -4,7 +4,7 @@ var actions = require('actions');
 var axios = require('axios');
 var HomeImages = require('homeImages');
 var HomeFollower = require('homeFollower');
-
+var ThongTinCaNhan = require('home_thongtincanhan');
 var home = React.createClass({
     getInitialState: function() {
         return {
@@ -13,6 +13,7 @@ var home = React.createClass({
     },
     componentWillMount: function() {
         var {theodoi, dispatch , nguoidung} = this.props;
+        dispatch(actions.layThongTinNguoiDung(nguoidung.tendangnhap));
         dispatch(actions.layNguoiDangTheoDoi(nguoidung.tendangnhap));
         dispatch(actions.demNguoiTheoDoi(nguoidung.tendangnhap))
     },
@@ -58,9 +59,9 @@ var home = React.createClass({
                     <div className="column large-3 information">
                         <div className="row">
                             <h3>Thông tin cá nhân</h3>
-                            <p>{nguoidung.tendangnhap}</p>
-                            <p>{nguoidung.email}</p>
-                            <p><strong>Lượt theo dõi:</strong> {luotTheoDoi}</p>
+                            <div className="thongtincanhan">
+                                <ThongTinCaNhan />
+                            </div>                            
                         </div>
                         <div className="row td">
                             <h3>Danh sách theo dõi</h3>

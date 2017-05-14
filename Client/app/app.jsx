@@ -13,6 +13,7 @@ var Followers = require('followers');
 var MyImages = require('MyImages');
 var ImageLB = require('ImageLB');
 var ImagesUpload = require('ImagesUpload');
+var Admin = require('Admin');
 // Load foundation
 // add all features of foundation
 require('style!css!foundation-sites/dist/css/foundation.min.css');
@@ -33,6 +34,7 @@ ReactDOM.render(
                     <Route path="/images/upload" component={ImagesUpload} />
                 </Route>
                 <Route path="/followers" component={Followers} />
+                <Route path="/admin" component={Admin} />
             </Route>
         </Router>
     </Provider>,

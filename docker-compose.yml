@@ -1,30 +1,60 @@
-version: '2'
+version: '3'
 services:
-  web1:
-    restart: always
+  web:
+    build: ./Client
+    container_name: WEB_CLIENT
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Client:/usr/src/doancuoiki/Client
+  webapipg:
     build: ./serverapi
+    container_name: WEB_API_PG
     ports:
       - "8080:8080"
     volumes:
       - ./serverapi:/usr/src/doancuoiki/serverapi
     links:
-      - db
-    depends_on:
-      - "db"
-    command: ["./wait-for-it.sh", "db:5432", "--", "node server.js"]
-  db:
+      - dbpg
+    command: ["./wait-for-it.sh", "dbpg:5432", "--", "node server.js"]
+  webneodb: 
+    build: ./serverNeo4j
+    container_name: WEB_API_NEO4J
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./serverNeo4j:/usr/src/doancuoiki/serverNeo4j
+    links:
+      - dbneo4j
+    command: ["./wait-for-it.sh", "dbneo4j:7474","--", "node server.js"]
+  webmgdb:
+    build: ./serverMongo
+    container_name: WEB_API_MONGO
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./serverMongo:/usr/src/doancuoiki/serverMongo
+    links:
+      - dbmongo
+    command: ["./wait-for-it.sh", "dbmongo:27017","--", "node server.js"]
+  dbpg:
     image: postgres
+    container_name: PG_DB
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=123456
       - POSTGRES_USER=pvDung
       - POSTGRES_DB=DoAnCuoiKi
-  web:
-    build: ./Client
+  dbneo4j:
+    image: neo4j:2.3
+    container_name: NEO4J_DB
     ports:
-      - "3000:3000"
-    volumes:
-      - ./Client:/usr/src/doancuoiki/Client
-    links:
-      - db
+      - "7474:7474"
+    environment:
+      - NEO4J_AUTH=none
+  dbmongo:
+    image: mongo
+    container_name: MG_DB
+    ports:
+      - "27017:27017"
