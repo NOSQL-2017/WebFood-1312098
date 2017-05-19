@@ -50,8 +50,7 @@ router.post('/login', function(req, res) {
                 res.send({message: 'Failed', error: true});
             }
         })
-        .catch(function(error) {
-        });
+        .catch(function(error) {});
     
 });
 

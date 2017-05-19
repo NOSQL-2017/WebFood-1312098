@@ -7,16 +7,6 @@ services:
       - "3000:3000"
     volumes:
       - ./Client:/usr/src/doancuoiki/Client
-  webapipg:
-    build: ./serverapi
-    container_name: WEB_API_PG
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./serverapi:/usr/src/doancuoiki/serverapi
-    links:
-      - dbpg
-    command: ["./wait-for-it.sh", "dbpg:5432", "--", "node server.js"]
   webneodb: 
     build: ./serverNeo4j
     container_name: WEB_API_NEO4J
@@ -37,6 +27,36 @@ services:
     links:
       - dbmongo
     command: ["./wait-for-it.sh", "dbmongo:27017","--", "node server.js"]
+  webes:
+    build: ./serverES
+    container_name: WEB_API_ES
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./serverES:/usr/src/doancuoiki/serverES
+    links:
+      - esdb
+    command: ["./wait-for-it.sh", "esdb:9200","--", "node server.js"]
+  webredis: 
+    build: ./serverRedis
+    container_name: WEB_API_REDIS
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./serverRedis:/usr/src/doancuoiki/serverRedis
+    links:
+      - dbredis
+    command: ["./wait-for-it.sh", "dbredis:6379","--", "nodemon server.js"]
+  webcsdradb:
+    build: ./serverCassandra
+    container_name: WEB_API_CS
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./serverCassandra:/usr/src/doancuoiki/serverCassandra
+    links:
+      - cassandra
+    command: ["./wait-for-it.sh", "cassandra:9042","--", "nodemon server.js"]
   dbpg:
     image: postgres
     container_name: PG_DB
@@ -58,3 +78,33 @@ services:
     container_name: MG_DB
     ports:
       - "27017:27017"
+  esdb:
+    build: elasticsearch/
+    container_name: ES_DB
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+  dbredis: 
+    image: redis
+    container_name: REDIS_DB
+    ports: 
+      - "6379:6379"
+  cassandra:
+    image: cassandra:latest
+    container_name: CSDRA_DB
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "9160:9160"
+      - "9042:9042"
+      - "7199:7199"
+  setupcassandra:
+    build: cassandra/
+    container_name: CSDRA_CASE_DB
+    links:
+      - cassandra
+    command: bash -c "sleep 60 && echo create keyspace doancuoiki  && cqlsh cassandra -f init.cql && sleep infinity"

@@ -42,11 +42,11 @@ export var dangNhap = (username, password) => {
     var matkhau = password
     return (dispatch, getState) => {
         dispatch(kiemTraDangNhap());
-        axios.post('http://localhost:8080/api/nguoidung/login', {
+        axios.post('http://localhost:8085/api/nguoidung/login', {
             tendangnhap,
             matkhau
         }).then(function (res) {
-            if (res.data.error == false) {
+            if (res.data.check == true) {
                 dispatch(dangNhapThanhCong(tendangnhap));
             } else {
                 dispatch(dangNhapThatBai());
@@ -79,25 +79,35 @@ export var dangKy = (tendangnhap, hoten, email, matkhau) => {
     return (dispatch, getState) => {
         dispatch(kiemTraDangKy());
 
-        axios.post('http://localhost:8080/api/nguoidung/signup', {
+        axios.post('http://localhost:8085/api/nguoidung/signup', {
             tendangnhap,
             hoten,
             email,
             matkhau
         }).then(function (response) {
-                if (response.data.error == false) {
-                    dispatch(dangKyThanhCong(tendangnhap));
-                    axios.post('http://localhost:8081/api/theodoi/createuser',{
-                        username: tendangnhap
-                    }).then(function(res) {
-                        if (res.data.error == true) {
-                            console.log('Tao node user that bai.')
-                        }
-                    })
-                } else {
-                    dispatch(dangKyThatBai());
-                }
-            })
+            if (response.data.error == false) {
+                dispatch(dangKyThanhCong(tendangnhap));
+                axios.post('http://localhost:8081/api/theodoi/createuser', {
+                    username: tendangnhap
+                }).then(function (res) {
+                    if (res.data.error == true) {
+                        console.log('Tao node user that bai.')
+                    }
+                })
+
+                axios.post('http://localhost:8083/api/search', {
+                    tennguoidung: hoten,
+                    tendangnhap: tendangnhap
+                }).then(function (res) {
+                    if (res.data.error == false) {
+                        console.log('Thêm vào es thành công.')
+                    }
+                })
+
+            } else {
+                dispatch(dangKyThatBai());
+            }
+        })
 
     }
 }
@@ -111,11 +121,11 @@ export var layThongTinNguoiDungTC = (nguoidung) => {
 
 export var layThongTinNguoiDung = (tendangnhap) => {
     return (dispatch, getState) => {
-        axios.get('http://localhost:8080/api/nguoidung/', {
+        axios.get('http://localhost:8085/api/nguoidung/', {
             params: {
                 tendangnhap
             }
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(layThongTinNguoiDungTC(res.data.nguoidung['0']))
             }
@@ -188,18 +198,18 @@ export var taiAnh = (files) => {
     }
 
 }
-export var LuuAnhCaNhan = (upload,tendangnhap) => {
+export var LuuAnhCaNhan = (upload, tendangnhap) => {
     return (dispatch, getState) => {
-         axios.post('http://localhost:8080/api/nguoidung/capnhapanhdaidien', {
+        axios.post('http://localhost:8085/api/nguoidung/capnhapanhdaidien', {
             url: upload.secure_url,
             tendangnhap: tendangnhap
-           
+
         }).then(function (response) {
-                if (response.data.error == false) {
-                    
-                } else {
-                    console.log('Cập nhập ảnh đại diện thất bại')
-                }
+            if (response.data.error == false) {
+
+            } else {
+                console.log('Cập nhập ảnh đại diện thất bại')
+            }
         })
     }
 }
@@ -266,21 +276,31 @@ export var luuAnh = (url, sohuu, camnhan, diadanh) => {
         var maanh_1 = uuid();
         var maanh_2 = maanh_1.split('-');
         var maanh = '';
-        for (var i=0; i< maanh_2.length; i++) {
+        for (var i = 0; i < maanh_2.length; i++) {
             maanh = maanh + maanh_2[i];
         }
-        axios.post('http://localhost:8080/api/anh', {
-            maanh,
+        var thongtinanh = {
             url,
-            sohuu,
             camnhan,
-            diadanh
+            diadanh,
+            sohuu
+        }
+        axios.post('http://localhost:8084/api/anh', {
+            maanh,
+            thongtinanh
         }).then(function (response) {
-                if (response.data.error == false) {
-                    dispatch(luuAnhThanhCong(url));
-                } else {
+            if (response.data.error == false) {
+                dispatch(luuAnhThanhCong(url));
+            }
+        })
 
-                }
+        axios.post('http://localhost:8082/api/sohuuanh/', {
+            sohuu,
+            maanh
+        }).then(function (res) {
+            if (res.data.error == false) {
+                console.log('luu anh vao so huu thanh cong');
+            }
         })
 
         axios.post('http://localhost:8082/api/diadanh/luuAnhVaoDiaDanh', {
@@ -288,7 +308,7 @@ export var luuAnh = (url, sohuu, camnhan, diadanh) => {
             url,
             madiadanh: diadanh,
             sohuu
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == true) {
                 console.log('Luu anh vao ds anh trong dia danh that bai');
             }
@@ -296,7 +316,7 @@ export var luuAnh = (url, sohuu, camnhan, diadanh) => {
 
         axios.post('http://localhost:8081/api/thichanh/createimage', {
             images_id: maanh
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == true) {
                 console.log('Tao node anh that bai');
             }
@@ -319,14 +339,14 @@ export var layAnhThanhCong = (dsAnhDaLuu) => {
 
 export var layAnh = (sohuu) => {
     return (dispatch, getState) => {
-        axios.get('http://localhost:8080/api/anh', {
+        axios.get('http://localhost:8082/api/sohuuanh', {
             params: {
                 sohuu
             }
         }).then(function (response) {
-                if (response.data.error == false) {
-                    dispatch(layAnhThanhCong(response.data.dsAnhDaLuu));
-                }
+            if (response.data.error == false) {
+                dispatch(layAnhThanhCong(response.data.dsAnh));
+            }
         })
     }
 }
@@ -347,21 +367,22 @@ export var xoaAnhThanhCong = (maanh) => {
 
 export var xoaAnh = (maanh) => {
     return (dispatch, getState) => {
-        axios.delete('http://localhost:8080/api/anh', {
+
+        axios.delete('http://localhost:8082/api/sohuuanh', {
             params: {
                 maanh
             }
         }).then(function (response) {
-                if (response.data.error == false) {
-                    dispatch(xoaAnhThanhCong(maanh));
-                }
+            if (response.data.error == false) {
+              dispatch(xoaAnhThanhCong(maanh));
+            }
         })
 
         axios.delete('http://localhost:8081/api/deleteimage', {
             params: {
                 images_id: maanh
             }
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == true) {
                 console.log('Xoa node anh that bai');
             }
@@ -389,18 +410,14 @@ export var layAnhNguoiTheoDoi = (dsNguoiDangTheoDoi) => {
 
         dsNguoiDangTheoDoi.forEach(nguoi => {
 
-            axios.get('http://localhost:8080/api/anh', {
+            axios.get('http://localhost:8082/api/anh', {
                 params: {
                     sohuu: nguoi.nguoitheodoi
                 }
-            })
-                .then(function (response) {
+            }).then(function (response) {
                     if (response.data.error == false) {
-                        if (response.data.dsAnhDaLuu.length > 0) {
-                            dispatch(layAnhNguoiTDTC(response.data.dsAnhDaLuu));
-                        }
-                    } else {
-
+                        console.log(response.data.dsAnh);
+                        //dispatch(layAnhNguoiTDTC(response.data.dsAnh));
                     }
                 })
         })
@@ -452,10 +469,10 @@ export var layDiaDanhTheoMa = (madiadanh) => {
                 madiadanh
             }
         }).then(function (response) {
-                if (response.data.error == false) {
-                    dispatch(layDiaDanhTheoMaTC(response.data.tendiadanh));
-                } 
-            })
+            if (response.data.error == false) {
+                dispatch(layDiaDanhTheoMaTC(response.data.tendiadanh));
+            }
+        })
     }
 }
 
@@ -464,7 +481,7 @@ export var themDiaDanh = (madiadanh, tendiadanh) => {
         axios.post('http://localhost:8082/api/diadanh/luuDiaDanh', {
             madiadanh,
             tendiadanh
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(layDsDiaDanh());
             }
@@ -478,7 +495,7 @@ export var xoaDiaDanh = (madiadanh) => {
             params: {
                 madiadanh
             }
-        }).then(function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(layDsDiaDanh());
             }
@@ -505,7 +522,9 @@ export var layNguoiTheoDoi = (tendangnhap) => {
     return (dispatch, getState) => {
 
         axios.get('http://localhost:8081/api/theodoi/suggestfollowing', {
-            params: { tendangnhap }
+            params: {
+                tendangnhap
+            }
         })
             .then(function (res) {
                 if (res.data.error == false) {
@@ -530,13 +549,14 @@ export var layNguoiDangTheoDoi = (tendangnhap) => {
             params: {
                 username: tendangnhap
             }
+        }).then(function (res) {
+            if (res.data.error == false) {
+                console.log(res.data);
+                dispatch(layNguoiDangTheoDoiTC(res.data.dsTheoDoi))
+            } else {
+                console.log("lay nguoi theo doi that bai")
+            }
         })
-            .then(function (res) {
-                if (res.data.error == false) {
-                    console.log(res.data);
-                    dispatch(layNguoiDangTheoDoiTC(res.data.dsTheoDoi))
-                }
-            })
     }
 }
 
@@ -569,7 +589,7 @@ export var huyTheoDoiTc = (nguoidung) => {
     }
 }
 
-export var huyTheoDoi = (nguoiduoctheodoi, nguoitheodoi) => {
+export var huyTheoDoi = (nguoitheodoi, nguoiduoctheodoi) => {
     return (dispatch, getState) => {
         axios.delete('http://localhost:8081/api/theodoi/unfollow', {
             params: {
@@ -578,7 +598,7 @@ export var huyTheoDoi = (nguoiduoctheodoi, nguoitheodoi) => {
             }
         }).then(function (res) {
             if (res.data.error == false) {
-                //dispatch(huyTheoDoiTc(nguoidung));
+                console.log("Huy theo doi thanh cong")
             }
         })
     }
@@ -597,18 +617,41 @@ export var demNguoiTheoDoi = (nguoitheodoi) => {
 
         axios.get('http://localhost:8081/api/theodoi/countFollowing', {
             params: {
-               otherusername: nguoitheodoi
+                otherusername: nguoitheodoi
             }
         })
             .then(function (response) {
                 if (response.data.error == false) {
                     dispatch(demNguoiTheoDoiTC(response.data.total));
-                } else {
-
                 }
             })
     }
 }
+
+export var layGoiYTheoDoiTC = (dsGoiYTheoDoi) => {
+    return {
+        type: 'DS_GOI_Y',
+        dsGoiYTheoDoi
+    }
+}
+
+
+export var layGoiYTheoDoi = (tendangnhap) => {
+    return (dispatch, getState) => {
+
+        axios.get('http://localhost:8081/api/theodoi/suggestfollowing', {
+            params: {
+                username: tendangnhap
+            }
+        })
+            .then(function (response) {
+                if (response.data.error == false) {
+                    dispatch(demNguoiTheoDoiTC(response.data.dsGoiYTheoDoi));
+                }
+            })
+    }
+}
+
 
 // ---- thich anh ---- //
 
@@ -640,11 +683,11 @@ export var huyThichAnhTC = () => {
 
 export var huyThichAnh = (maanh, nguoithich) => {
     return (dispatch, getState) => {
-         axios.delete('http://localhost:8081/api/thichanh/unlike', {
-           params: {
+        axios.delete('http://localhost:8081/api/thichanh/unlike', {
+            params: {
                 images_id: maanh,
                 username: nguoithich
-           }
+            }
         }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(huyThichAnhTC());
@@ -655,13 +698,13 @@ export var huyThichAnh = (maanh, nguoithich) => {
 
 export var demSoLuongThichAnh = (maanh) => {
     return (dispatch, getState) => {
-         axios.get('http://localhost:8081/api/thichanh/countlike', {
-           params: {
-                images_id: maanh    
-           }
+        axios.get('http://localhost:8081/api/thichanh/countlike', {
+            params: {
+                images_id: maanh
+            }
         }).then(function (res) {
             if (res.data.error == false) {
-                
+
             }
         })
     }
@@ -680,7 +723,7 @@ export var countFollowing = (tendangnhap) => {
             params: {
                 username: tendangnhap
             }
-        }).then( function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(countFollowingSC(res.data.total))
             }
@@ -702,9 +745,34 @@ export var countFollowers = (tendangnhap) => {
             params: {
                 otherusername: tendangnhap
             }
-        }).then( function(res) {
+        }).then(function (res) {
             if (res.data.error == false) {
                 dispatch(countFollowingSC(res.data.total))
+            }
+        })
+    }
+}
+
+
+// ===== search ===== //
+export var searchSC = (dsTimKiem, tendangnhap) => {
+    return {
+        type: 'SEARCH_SUCCESS',
+        dsTimKiem,
+        tendangnhap
+    }
+}
+
+export var search = (tennguoidung, tendangnhap) => {
+    return (dispatch, getState) => {
+        axios.get('http://localhost:8083/api/search', {
+            params: {
+                tennguoidung: tennguoidung
+            }
+        }).then(function (res) {
+            if (res.data.error == false) {
+                console.log(res.data.dsTimKiem)
+                dispatch(searchSC(res.data.dsTimKiem, tendangnhap))
             }
         })
     }

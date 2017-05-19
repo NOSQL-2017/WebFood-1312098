@@ -16,7 +16,7 @@ var Nav = React.createClass({
         var that = this;
         var hienThiChucNangDNTC = function() {
             if (nguoidung.isLogin == true) {
-                if (nguoidung.tendangnhap == "admin") {
+                if (nguoidung.capdo == "1") {
                     return (
                         <ul className="main-nav">
                             <li> <Link to="/admin">Thêm địa danh</Link></li>

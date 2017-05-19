@@ -21,12 +21,10 @@ router.get('/suggestfollowing', function (req, res) {
 })
 
 router.get('/getfollowing', function (req, res) {
-    var query = 'MATCH (user:User {username: {thisUsername}})-[rel:follows]->(other:User) RETURN other, COUNT(rel)';
-
+    var query = 'MATCH (user:User {username: {thisUsername}})-[rel:follows]->(other:User) RETURN other';
     var params = {
         thisUsername: req.query.username
     };
-
     var user = this;
     db.cypher({
         query: query,
@@ -36,18 +34,12 @@ router.get('/getfollowing', function (req, res) {
         else {
             var following = [];
             var others = [];
-
             for (var i = 0; i < results.length; i++) {
-
-                following.push(results[i]['other']);
-
+                following.push(results[i]['other'].properties);
             }
             res.send({ message: "Success", error: false, dsTheoDoi: following });
-
         }
-
     });
-
 })
 
 router.get('/countFollowers', function (req, res) {

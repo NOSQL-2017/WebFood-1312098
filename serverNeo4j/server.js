@@ -14,5 +14,5 @@ app.use(function (req, res, next) {
 
 app.use(require('./controllers'));
 app.listen('8081', function () {
-    console.log('Sever neo4j is running');
+    console.log('Server neo4j is running');
 });

@@ -185,15 +185,10 @@ export var theoDoiReducer = (state = {dsGoiY: [], dsDangTheoDoi: [], soNguoiTheo
                 dsDangTheoDoi: [], 
                 soNguoiTheoDoi: 0
             }
-        case 'LAY_NGUOI_THEO_DOI_TC':
-            return {
-                ...state,
-                dsGoiY: action.dsGoiYTheoDoi
-            }
         case 'LAY_NGUOI_DANG_THEO_DOI_TC':
             return {
                 ...state,
-                dsDangTheoDoi: action.dsNguoiDangTheoDoi
+                dsDangTheoDoi: action.dsNguoiDangTheoDoi || []
             }
         case 'THEO_DOI_TC':
            return state;
@@ -212,7 +207,30 @@ export var theoDoiReducer = (state = {dsGoiY: [], dsDangTheoDoi: [], soNguoiTheo
                 ...state,
                 soNguoiTheoDoi: action.soLuong
             }
+        case 'DS_GOI_Y':
+            return {
+                ...state,
+                dsGoiY: action.dsGoiYTheoDoi || []
+            }
         default:
+            return state;
+    }
+}
+
+
+// ====== search reducer =======
+
+export var searchReducer = ( state = {dsTimKiem: []}, action) => {
+    switch(action.type) {
+        case 'SEARCH_SUCCESS': 
+            var update = action.dsTimKiem.filter( e => {
+                return e._source.tendangnhap !== action.tendangnhap;
+            })
+            return {
+                ...state,
+                dsTimKiem: update || []
+            }
+        default: 
             return state;
     }
 }

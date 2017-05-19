@@ -16,5 +16,5 @@ app.use(function(req, res, next) {
 app.use(require('./controllers'));
 
 app.listen('8082', function() {
-    console.log('Sever mongo is running');
+    console.log('Server mongo is running');
 });

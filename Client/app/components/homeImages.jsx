@@ -7,7 +7,8 @@ var HomeImages = React.createClass({
     getInitialState: function () {
         return {
             like: false,
-            soLuongLike: 0
+            soLuongLike: 0,
+            thongtinanh: {}
         }
     },
     componentWillUpdate: function(nextProps, nextState) {
@@ -28,6 +29,18 @@ var HomeImages = React.createClass({
     },
     componentWillMount: function () {
         var {anh, nguoidung} = this.props;
+
+        axios.get('http://localhost:8084/api/sohuuanh',{
+            params: {
+                maanh: anh.maanh
+            }
+        }).then(function(req, res) {
+            if (res.data.error == false) {
+                this.setState({
+                    thongtinanh: res.data.data || {}
+                })
+            }
+        }.bind(this))
         axios.get('http://localhost:8081/api/thichanh/countlike', {
             params: {
                 images_id: anh.maanh
@@ -70,7 +83,7 @@ var HomeImages = React.createClass({
 
     render: function () {
         var { anh, dispatch } = this.props;
-        var { like, soLuongLike } = this.state;
+        var { like, soLuongLike , thongtinanh} = this.state;
 
        
         var that = this;
@@ -85,12 +98,12 @@ var HomeImages = React.createClass({
             <div className="row homeImages">
                 <div className="card-flex-article card">
                     <div className="card-image">
-                        <img src={anh.url} />
-                        <span className="label alert card-tag">#{anh.madiadanh}</span>
+                        <img src={thongtinanh.url} />
+                        <span className="label alert card-tag">#{thongtinanh.diadanh}</span>
                     </div>
                     <div className="card-section">
-                        <h3 className="article-title">{anh.sohuu}</h3>
-                        <p className="article-summary">{anh.camnhan}</p>
+                        <h3 className="article-title">{thongtinanh.sohuu}</h3>
+                        <p className="article-summary">{thongtinanh.camnhan}</p>
                     </div>
                     <div className="chucnang">
                         <div className="notability">
