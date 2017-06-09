@@ -7,19 +7,20 @@ var ImageLB_DT = React.createClass({
     getInitialState: function() {
         return {
             soLuongLike: 0,
-            tenDiaDanh: ''
+            tenDiaDanh: '',
+            infor: {}
         }
     },
     componentWillMount: function() {
         var {dispatch, anh} = this.props;
-         axios.get('http://localhost:8082/api/diadanh/layDiaDanhTheoMa', {
+         axios.get('http://localhost:8084/api/anh/', {
                 params: {
-                    madiadanh: anh.madiadanh
+                    maanh: anh.maanh
                 }
             }).then(function (response) {
                 if (response.data.error == false) {
                     this.setState({
-                        tenDiaDanh: response.data.tendiadanh
+                        infor: response.data.info || {}
                     })
                 }
         }.bind(this))
@@ -34,6 +35,8 @@ var ImageLB_DT = React.createClass({
                 })
             }
         }.bind(this))
+
+        
     },
     handleDelete: function(e) {
         e.preventDefault();
@@ -42,15 +45,15 @@ var ImageLB_DT = React.createClass({
     },
     render: function () {
         var { anh, dispatch, diadanh } = this.props;
-        var {soLuongLike, tenDiaDanh} = this.state;
+        var {soLuongLike, tenDiaDanh, infor} = this.state;
         return (
             <div className="marketing-site-content-section">
                 <div className="marketing-site-content-section-img">
-                    <img src={anh.url} alt="" />
+                    <img src={infor.maanh} alt="" />
                 </div>
                 <div className="marketing-site-content-section-block">
-                    <h3 className="marketing-site-content-section-block-header">{tenDiaDanh}</h3>
-                    <p className="marketing-site-content-section-block-subheader subheader">{anh.camnhan}</p>
+                    <h3 className="marketing-site-content-section-block-header">{infor.diadanh}</h3>
+                    <p className="marketing-site-content-section-block-subheader subheader">{infor.camnhan}</p>
                     <p className="marketing-site-content-section-block-subheader subheader">LIKE: {soLuongLike}</p>
                     <a onClick={this.handleDelete} className="round button small">Xóa ảnh này</a>
                 </div>    

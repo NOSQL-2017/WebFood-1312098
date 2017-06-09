@@ -345,6 +345,7 @@ export var layAnh = (sohuu) => {
             }
         }).then(function (response) {
             if (response.data.error == false) {
+                console.log(response.data.dsAnh);
                 dispatch(layAnhThanhCong(response.data.dsAnh));
             }
         })
@@ -560,73 +561,73 @@ export var layNguoiDangTheoDoi = (tendangnhap) => {
     }
 }
 
-export var theoDoiTc = (matheodoi) => {
-    return {
-        type: 'THEO_DOI_TC',
-        matheodoi
-    }
-}
+// export var theoDoiTc = (matheodoi) => {
+//     return {
+//         type: 'THEO_DOI_TC',
+//         matheodoi
+//     }
+// }
 
-export var theoDoi = (nguoitheodoi, nguoiduoctheodoi) => {
-    return (dispatch, getState) => {
+// export var theoDoi = (nguoitheodoi, nguoiduoctheodoi) => {
+//     return (dispatch, getState) => {
 
-        axios.post('http://localhost:8081/api/theodoi/follow', {
-            username: nguoitheodoi,
-            otherusername: nguoiduoctheodoi
-        }).then(function (res) {
-            if (res.data.error == false) {
-                //dispatch(theoDoiTc(nguoidung))
-            }
-        })
-    }
-}
-
-
-export var huyTheoDoiTc = (nguoidung) => {
-    return {
-        type: 'HUY_THEO_DOI_TC',
-        nguoidung
-    }
-}
-
-export var huyTheoDoi = (nguoitheodoi, nguoiduoctheodoi) => {
-    return (dispatch, getState) => {
-        axios.delete('http://localhost:8081/api/theodoi/unfollow', {
-            params: {
-                username: nguoitheodoi,
-                otherusername: nguoiduoctheodoi
-            }
-        }).then(function (res) {
-            if (res.data.error == false) {
-                console.log("Huy theo doi thanh cong")
-            }
-        })
-    }
-}
+//         axios.post('http://localhost:8081/api/theodoi/follow', {
+//             username: nguoitheodoi,
+//             otherusername: nguoiduoctheodoi
+//         }).then(function (res) {
+//             if (res.data.error == false) {
+//                 //dispatch(theoDoiTc(nguoidung))
+//             }
+//         })
+//     }
+// }
 
 
-export var demNguoiTheoDoiTC = (soLuong) => {
-    return {
-        type: 'DEM_NGUOI_THEO_DOI',
-        soLuong
-    }
-}
+// export var huyTheoDoiTc = (nguoidung) => {
+//     return {
+//         type: 'HUY_THEO_DOI_TC',
+//         nguoidung
+//     }
+// }
 
-export var demNguoiTheoDoi = (nguoitheodoi) => {
-    return (dispatch, getState) => {
+// export var huyTheoDoi = (nguoitheodoi, nguoiduoctheodoi) => {
+//     return (dispatch, getState) => {
+//         axios.delete('http://localhost:8081/api/theodoi/unfollow', {
+//             params: {
+//                 username: nguoitheodoi,
+//                 otherusername: nguoiduoctheodoi
+//             }
+//         }).then(function (res) {
+//             if (res.data.error == false) {
+//                 console.log("Huy theo doi thanh cong")
+//             }
+//         })
+//     }
+// }
 
-        axios.get('http://localhost:8081/api/theodoi/countFollowing', {
-            params: {
-                otherusername: nguoitheodoi
-            }
-        })
-            .then(function (response) {
-                if (response.data.error == false) {
-                    dispatch(demNguoiTheoDoiTC(response.data.total));
-                }
-            })
-    }
-}
+
+// export var demNguoiTheoDoiTC = (soLuong) => {
+//     return {
+//         type: 'DEM_NGUOI_THEO_DOI',
+//         soLuong
+//     }
+// }
+
+// export var demNguoiTheoDoi = (nguoitheodoi) => {
+//     return (dispatch, getState) => {
+
+//         axios.get('http://localhost:8081/api/theodoi/countFollowing', {
+//             params: {
+//                 otherusername: nguoitheodoi
+//             }
+//         })
+//             .then(function (response) {
+//                 if (response.data.error == false) {
+//                     dispatch(demNguoiTheoDoiTC(response.data.total));
+//                 }
+//             })
+//     }
+// }
 
 export var layGoiYTheoDoiTC = (dsGoiYTheoDoi) => {
     return {
@@ -655,125 +656,125 @@ export var layGoiYTheoDoi = (tendangnhap) => {
 
 // ---- thich anh ---- //
 
-export var thichAnhTC = () => {
-    return {
-        type: 'THICH_ANH_TC'
-    }
-}
+// export var thichAnhTC = () => {
+//     return {
+//         type: 'THICH_ANH_TC'
+//     }
+// }
 
-export var thichAnh = (maanh, nguoithich) => {
-    return (dispatch, getState) => {
-        axios.post('http://localhost:8081/api/thichanh/like', {
-            images_id: maanh,
-            username: nguoithich
-        }).then(function (res) {
-            if (res.data.error == false) {
-                dispatch(thichAnhTC());
-            }
-        })
+// export var thichAnh = (maanh, nguoithich) => {
+//     return (dispatch, getState) => {
+//         axios.post('http://localhost:8081/api/thichanh/like', {
+//             images_id: maanh,
+//             username: nguoithich
+//         }).then(function (res) {
+//             if (res.data.error == false) {
+//                 dispatch(thichAnhTC());
+//             }
+//         })
 
-    }
-}
+//     }
+// }
 
-export var huyThichAnhTC = () => {
-    return {
-        type: 'HUY_THICH_ANH'
-    }
-}
+// export var huyThichAnhTC = () => {
+//     return {
+//         type: 'HUY_THICH_ANH'
+//     }
+// }
 
-export var huyThichAnh = (maanh, nguoithich) => {
-    return (dispatch, getState) => {
-        axios.delete('http://localhost:8081/api/thichanh/unlike', {
-            params: {
-                images_id: maanh,
-                username: nguoithich
-            }
-        }).then(function (res) {
-            if (res.data.error == false) {
-                dispatch(huyThichAnhTC());
-            }
-        })
-    }
-}
+// export var huyThichAnh = (maanh, nguoithich) => {
+//     return (dispatch, getState) => {
+//         axios.delete('http://localhost:8081/api/thichanh/unlike', {
+//             params: {
+//                 images_id: maanh,
+//                 username: nguoithich
+//             }
+//         }).then(function (res) {
+//             if (res.data.error == false) {
+//                 dispatch(huyThichAnhTC());
+//             }
+//         })
+//     }
+// }
 
-export var demSoLuongThichAnh = (maanh) => {
-    return (dispatch, getState) => {
-        axios.get('http://localhost:8081/api/thichanh/countlike', {
-            params: {
-                images_id: maanh
-            }
-        }).then(function (res) {
-            if (res.data.error == false) {
+// export var demSoLuongThichAnh = (maanh) => {
+//     return (dispatch, getState) => {
+//         axios.get('http://localhost:8081/api/thichanh/countlike', {
+//             params: {
+//                 images_id: maanh
+//             }
+//         }).then(function (res) {
+//             if (res.data.error == false) {
 
-            }
-        })
-    }
-}
+//             }
+//         })
+//     }
+// }
 
-export var countFollowingSC = (total) => {
-    return {
-        type: 'COUNT_FOLLOWING',
-        total
-    }
-}
+// export var countFollowingSC = (total) => {
+//     return {
+//         type: 'COUNT_FOLLOWING',
+//         total
+//     }
+// }
 
-export var countFollowing = (tendangnhap) => {
-    return (dispatch, getState) => {
-        axios.get('http://localhost:8081/api/theodoi/countFollowing', {
-            params: {
-                username: tendangnhap
-            }
-        }).then(function (res) {
-            if (res.data.error == false) {
-                dispatch(countFollowingSC(res.data.total))
-            }
-        })
-    }
-}
+// export var countFollowing = (tendangnhap) => {
+//     return (dispatch, getState) => {
+//         axios.get('http://localhost:8081/api/theodoi/countFollowing', {
+//             params: {
+//                 username: tendangnhap
+//             }
+//         }).then(function (res) {
+//             if (res.data.error == false) {
+//                 dispatch(countFollowingSC(res.data.total))
+//             }
+//         })
+//     }
+// }
 
 
-export var countFollowersSC = (total) => {
-    return {
-        type: 'COUNT_FOLLOWERS',
-        total
-    }
-}
+// export var countFollowersSC = (total) => {
+//     return {
+//         type: 'COUNT_FOLLOWERS',
+//         total
+//     }
+// }
 
-export var countFollowers = (tendangnhap) => {
-    return (dispatch, getState) => {
-        axios.get('http://localhost:8081/api/theodoi/countFollowers', {
-            params: {
-                otherusername: tendangnhap
-            }
-        }).then(function (res) {
-            if (res.data.error == false) {
-                dispatch(countFollowingSC(res.data.total))
-            }
-        })
-    }
-}
+// export var countFollowers = (tendangnhap) => {
+//     return (dispatch, getState) => {
+//         axios.get('http://localhost:8081/api/theodoi/countFollowers', {
+//             params: {
+//                 otherusername: tendangnhap
+//             }
+//         }).then(function (res) {
+//             if (res.data.error == false) {
+//                 dispatch(countFollowingSC(res.data.total))
+//             }
+//         })
+//     }
+// }
 
 
 // ===== search ===== //
-export var searchSC = (dsTimKiem, tendangnhap) => {
-    return {
-        type: 'SEARCH_SUCCESS',
-        dsTimKiem,
-        tendangnhap
-    }
-}
+// export var searchSC = (dsTimKiem, tendangnhap) => {
+//     return {
+//         type: 'SEARCH_SUCCESS',
+//         dsTimKiem,
+//         tendangnhap
+//     }
+// }
 
-export var search = (tennguoidung, tendangnhap) => {
-    return (dispatch, getState) => {
-        axios.get('http://localhost:8083/api/search', {
-            params: {
-                tennguoidung: tennguoidung
-            }
-        }).then(function (res) {
-            if (res.data.error == false) {
-                console.log(res.data.dsTimKiem)
-                dispatch(searchSC(res.data.dsTimKiem, tendangnhap))
-            }
-        })
-    }
-}
+// export var search = (tennguoidung, tendangnhap) => {
+//     return (dispatch, getState) => {
+//         axios.get('http://localhost:8083/api/search', {
+//             params: {
+//                 tennguoidung: tennguoidung
+//             }
+//         }).then(function (res) {
+//             if (res.data.error == false) {
+//                 console.log(res.data.dsTimKiem)
+//                 dispatch(searchSC(res.data.dsTimKiem, tendangnhap))
+//             }
+//         })
+//     }
+// }

@@ -1,12 +1,21 @@
 version: '3'
 services:
   web:
-    build: ./Client
-    container_name: WEB_CLIENT
+    build: ./ReduxIntagrams
+    container_name: CLIENT
     ports:
       - "3000:3000"
     volumes:
-      - ./Client:/usr/src/doancuoiki/Client
+      - ./ReduxIntagrams:/usr/src/doancuoiki/ReduxIntagrams
+    links:
+      - cassandra
+  # web:
+  #   build: ./Client
+  #   container_name: WEB_CLIENT
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./Client:/usr/src/doancuoiki/Client
   webneodb: 
     build: ./serverNeo4j
     container_name: WEB_API_NEO4J
@@ -16,7 +25,6 @@ services:
       - ./serverNeo4j:/usr/src/doancuoiki/serverNeo4j
     links:
       - dbneo4j
-    command: ["./wait-for-it.sh", "dbneo4j:7474","--", "node server.js"]
   webmgdb:
     build: ./serverMongo
     container_name: WEB_API_MONGO
@@ -26,17 +34,15 @@ services:
       - ./serverMongo:/usr/src/doancuoiki/serverMongo
     links:
       - dbmongo
-    command: ["./wait-for-it.sh", "dbmongo:27017","--", "node server.js"]
-  webes:
-    build: ./serverES
-    container_name: WEB_API_ES
-    ports:
-      - "8083:8083"
-    volumes:
-      - ./serverES:/usr/src/doancuoiki/serverES
-    links:
-      - esdb
-    command: ["./wait-for-it.sh", "esdb:9200","--", "node server.js"]
+  # webes:
+  #   build: ./serverES
+  #   container_name: WEB_API_ES
+  #   ports:
+  #     - "8083:8083"
+  #   volumes:
+  #     - ./serverES:/usr/src/doancuoiki/serverES
+  #   links:
+  #     - esdb
   webredis: 
     build: ./serverRedis
     container_name: WEB_API_REDIS
@@ -46,26 +52,6 @@ services:
       - ./serverRedis:/usr/src/doancuoiki/serverRedis
     links:
       - dbredis
-    command: ["./wait-for-it.sh", "dbredis:6379","--", "nodemon server.js"]
-  webcsdradb:
-    build: ./serverCassandra
-    container_name: WEB_API_CS
-    ports:
-      - "8085:8085"
-    volumes:
-      - ./serverCassandra:/usr/src/doancuoiki/serverCassandra
-    links:
-      - cassandra
-    command: ["./wait-for-it.sh", "cassandra:9042","--", "nodemon server.js"]
-  dbpg:
-    image: postgres
-    container_name: PG_DB
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_USER=pvDung
-      - POSTGRES_DB=DoAnCuoiKi
   dbneo4j:
     image: neo4j:2.3
     container_name: NEO4J_DB
@@ -74,27 +60,27 @@ services:
     environment:
       - NEO4J_AUTH=none
   dbmongo:
-    image: mongo
+    image: mongo:3.0.15
     container_name: MG_DB
     ports:
       - "27017:27017"
-  esdb:
-    build: elasticsearch/
-    container_name: ES_DB
-    volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+  # esdb:
+  #   build: elasticsearch/
+  #   container_name: ES_DB
+  #   volumes:
+  #     - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+  #   ports:
+  #     - "9200:9200"
+  #     - "9300:9300"
+  #   environment:
+  #     ES_JAVA_OPTS: "-Xmx256m -Xms256m"
   dbredis: 
     image: redis
     container_name: REDIS_DB
     ports: 
       - "6379:6379"
   cassandra:
-    image: cassandra:latest
+    image: cassandra
     container_name: CSDRA_DB
     ports:
       - "7000:7000"
@@ -102,9 +88,3 @@ services:
       - "9160:9160"
       - "9042:9042"
       - "7199:7199"
-  setupcassandra:
-    build: cassandra/
-    container_name: CSDRA_CASE_DB
-    links:
-      - cassandra
-    command: bash -c "sleep 60 && echo create keyspace doancuoiki  && cqlsh cassandra -f init.cql && sleep infinity"

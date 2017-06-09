@@ -6,15 +6,20 @@ var client = new cassandra.Client({ contactPoints: ['cassandra'] });
 var useKS = "USE doancuoiki"
 var createTB = "create table if not EXISTS nguoidung (tendangnhap varchar, matkhau varchar,hoten varchar, email varchar, anhdaidien text, gioithieu text, capdo varchar,PRIMARY KEY (tendangnhap));"
 var createkeyspace = "CREATE KEYSPACE IF NOT EXISTS doancuoiki WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1};"
-
+var createAdmin = "INSERT INTO doancuoiki.nguoidung(tendangnhap,matkhau,hoten,email,anhdaidien,gioithieu, capdo) values(?,?,?,?,?,?,?)";
 client.connect(function (err, result) {
     if (err) {
         console.log('Something wrong');
     } else {
         console.log('Cassandra connected: nguoidung')
             client.execute(createkeyspace, [], function (err, result) {
-                client.execute(useKS, [], function (err, result) {
-                    client.execute(createTB,[] ,function(err) {})
+                if (!err) client.execute(useKS, [], function (err, result) {
+                            if (!err) client.execute(createTB,[] ,function(err) {
+                                    if(!err) client.execute(createAdmin,['admin', 'admin','admin','admin','admin','admin','1'] ,function(err) {
+                                         if (!err) console.log('Tao admin thanh cong')
+                                         else console.log(err);
+                                    })
+                                })
             })
         })
     }
@@ -68,6 +73,7 @@ router.post('/login', function (req, res) {
             console.log(err);
             res.status(404).send({message: err, error: true});
         } else {
+            console.log(result);
             if (result.rows['0'].count == "1")
                 res.status(200).send({ message: 'Success', error: false, check: true });
             else {

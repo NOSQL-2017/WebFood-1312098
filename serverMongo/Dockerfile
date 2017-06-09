@@ -14,4 +14,5 @@ RUN npm install
 COPY . /usr/src/doancuoiki/serverMongo
 
 EXPOSE 8082
+
 CMD  npm start

@@ -6,10 +6,10 @@ var db = new neo4j.GraphDatabase('http://dbneo4j:7474');
 
 
 
-router.get('/countlike', function(req, res) {
-     var query ='MATCH (user:User)-[rel:like]->(img:Images {img_id: {images_id}}) RETURN COUNT(rel)';
+router.get('/countlike', function (req, res) {
+    var query = 'MATCH (user:User)-[rel:like]->(img:Images {img_id: {images_id}}) RETURN COUNT(rel)';
 
-      var params = {
+    var params = {
         images_id: req.query.images_id
     };
 
@@ -17,22 +17,18 @@ router.get('/countlike', function(req, res) {
         query: query,
         params: params,
     }, function (err, results) {
-        if (err) return callback(err);
-
-        var following = [];
-        var others = [];
-        if (err) {
-            res.send({message: "failed", error: true});
-        } else {
-            res.send({message: "Success", error: false, total: results['0']["COUNT(rel)"] });
-        }       
-
+        if (err) res.status(500).json({ err });
+        else {
+            var following = [];
+            var others = [];
+            res.status(201).json({ total: results['0']["COUNT(rel)"] });
+        }
     });
- 
+
 })
 
 router.get('/checklike', function (req, res) {
-    var query ='MATCH (user:User {username: {thisUsername}})-[rel:like]->(img:Images {img_id: {images_id}}) RETURN COUNT(rel)';
+    var query = 'MATCH (user:User {username: {thisUsername}})-[rel:like]->(img:Images {img_id: {images_id}}) RETURN COUNT(rel)';
 
     var params = {
         thisUsername: req.query.username,
@@ -43,23 +39,23 @@ router.get('/checklike', function (req, res) {
         query: query,
         params: params,
     }, function (err, results) {
-        if (err) return callback(err);
-
-        var following = [];
-        var others = [];        
-        if (results['0']["COUNT(rel)"] == 0) {
-            res.send({message: "Failed", error: true});
-        } else {
-            res.send({message: "Sucess", error: false})
+        if (err) res.status(500).json({ err });
+        else {
+            var following = [];
+            var others = [];
+            if (results['0']["COUNT(rel)"] == 0) {
+                res.status(201).json({ follow: false })
+            } else {
+                res.status(201).json({ follow: true })
+            }
         }
 
-        //callback(null, following, others);
     });
- 
+
 })
 
 router.delete('/unlike', function (req, res) {
-   var query = 'MATCH (user:User {username: {thisUsername}}), (img:Images {img_id: {images_id}}) MERGE (user)-[rel:like]->(img) DELETE rel';
+    var query = 'MATCH (user:User {username: {thisUsername}}), (img:Images {img_id: {images_id}}) MERGE (user)-[rel:like]->(img) DELETE rel';
 
     var params = {
         thisUsername: req.query.username,
@@ -71,17 +67,16 @@ router.delete('/unlike', function (req, res) {
         params: params,
     }, function (err) {
         if (!err) {
-            res.send({message: "success", error: false});
+            res.status(201).json({success: true });
         } else {
-            console.log("unlike error:", err);
-            res.send({message: "Failed", error: true});
+            res.status(500).json({err});
         }
     });
 
 })
 
 router.post('/like', function (req, res) {
-   var query = 'MATCH (user:User {username: {thisUsername}}), (img:Images {img_id: {images_id}}) MERGE (user)-[rel:like]->(img)';
+    var query = 'MATCH (user:User {username: {thisUsername}}), (img:Images {img_id: {images_id}}) MERGE (user)-[rel:like]->(img)';
 
     var params = {
         thisUsername: req.body.username,
@@ -93,16 +88,15 @@ router.post('/like', function (req, res) {
         params: params,
     }, function (err) {
         if (!err) {
-            res.send({message: "success", error: false});
+            res.status(201).json({success: true });
         } else {
-             console.log("like error:", err);
-            res.send({message: "Failed", error: true});
+            res.status(500).json({err});
         }
     });
 
 });
 
-router.delete('/deleteimage', function(req, res) {
+router.delete('/deleteimage', function (req, res) {
     var query = 'match (img:Images {img_id: {images_id}}) optional match ()-[r:like]->(img) delete r, img';
     var params = {
         images_id: req.query.images_id
@@ -113,17 +107,16 @@ router.delete('/deleteimage', function(req, res) {
         params: params,
     }, function (err) {
         if (!err) {
-            res.send({message: "success", error: false});
+            res.status(201).json({success: true });
         } else {
-            console.log("delete img error:", err);
-            res.send({message: "Failed", error: true});
+            res.status(500).json({err});
         }
     });
 
 })
 
 
-router.post('/createimage', function(req,res) {
+router.post('/createimage', function (req, res) {
     var query = 'CREATE (im:Images {img_id: {images_id}}) RETURN im';
     var params = {
         images_id: req.body.images_id
@@ -134,12 +127,10 @@ router.post('/createimage', function(req,res) {
         params: params,
     }, function (err, results) {
         if (err) {
-            console.log(err);
-            res.send({message: "failed", error: true});
+            res.status(500).json({err});
         } else {
-            res.send({message: "success", error: false});
+            res.status(201).json({ success: true });
         }
-        //console.log(results);
     });
 });
 

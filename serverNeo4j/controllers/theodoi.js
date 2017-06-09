@@ -4,8 +4,6 @@ var uuid = require('node-uuid');
 var neo4j = require('neo4j');
 var db = new neo4j.GraphDatabase('http://dbneo4j:7474');
 
-
-
 router.get('/suggestfollowing', function (req, res) {
     var query = 'MATCH (user:User {username: {thisusername}})-[rel:follows]->(other:User), (other)-[r:follows]->(fof:User) where fof <>user and not (user)-[follows]->(fof) return distinct fof.username'
     var params = {
@@ -15,8 +13,8 @@ router.get('/suggestfollowing', function (req, res) {
         query: query,
         params: params,
     }, function (err, results) {
-        if (err) res.send({ message: "Failed", error: true });
-        else res.send({ message: "Success", error: false, dsGoiYTheoDoi: results });
+        if (err) res.status(500).json({ err });
+        else res.status(201).json({ dsGoiYTheoDoi: results });
     });
 })
 
@@ -30,41 +28,33 @@ router.get('/getfollowing', function (req, res) {
         query: query,
         params: params,
     }, function (err, results) {
-        if (err) res.status(404).send({ message: "Failed", error: true });
+        if (err) res.status(500).send({ err });
         else {
             var following = [];
             var others = [];
             for (var i = 0; i < results.length; i++) {
                 following.push(results[i]['other'].properties);
             }
-            res.send({ message: "Success", error: false, dsTheoDoi: following });
+            res.status(201).json({ dsTheoDoi: following });
         }
     });
 })
 
 router.get('/countFollowers', function (req, res) {
     var query = 'MATCH (user:User)-[rel:follows]->(other:User {username: {otherUsername}}) RETURN COUNT(rel)';
-
     var params = {
         otherUsername: req.query.otherusername
     };
-
     db.cypher({
         query: query,
         params: params,
     }, function (err, results) {
-        if (err) res.status(404).send({ message: "Failed", error: true });
+        if (err) res.status(500).json({ err });
         else {
             var following = [];
             var others = [];
-            if (err) {
-                res.send({ message: "Failed", error: true });
-            } else {
-                res.send({ message: "Sucess", error: false, total: results['0']["COUNT(rel)"] })
-            }
+            res.status(201).json({ total: results['0']["COUNT(rel)"] })
         }
-
-
     });
 })
 
@@ -74,24 +64,16 @@ router.get('/countFollowing', function (req, res) {
     var params = {
         thisUsername: req.query.username
     };
-
     db.cypher({
         query: query,
         params: params,
     }, function (err, results) {
-        if (err) res.send({ message: "Failed", error: true });
+        if (err) res.status(500).json({ err });
         else {
             var following = [];
             var others = [];
-            if (err) {
-                res.send({ message: "Failed", error: true });
-            } else {
-                res.send({ message: "Sucess", error: false, total: results['0']["COUNT(rel)"] })
-            }
-
+            res.status(201).json({ total: results['0']["COUNT(rel)"] })
         }
-
-
     });
 })
 
@@ -102,24 +84,21 @@ router.get('/checkfollowing', function (req, res) {
         thisUsername: req.query.username,
         otherUsername: req.query.otherusername
     };
-
     db.cypher({
         query: query,
         params: params,
     }, function (err, results) {
-        if (err) res.send({ message: "Failed", error: true });
+        if (err) res.status(500).json({ err });
         else {
             var following = [];
             var others = [];
             if (results['0']["COUNT(rel)"] == 0) {
-                res.send({ message: "Failed", error: true });
+                res.status(201).json({ follow: false })
             } else {
-                res.send({ message: "Sucess", error: false })
+                res.status(201).json({ follow: true })
             }
-
         }
     });
-
 })
 
 router.delete('/unfollow', function (req, res) {
@@ -129,16 +108,14 @@ router.delete('/unfollow', function (req, res) {
         thisUsername: req.query.username,
         otherUsername: req.query.otherusername,
     };
-
     db.cypher({
         query: query,
         params: params,
     }, function (err) {
         if (!err) {
-            res.send({ message: "success", error: false });
+            res.status(201).json({ success: true });
         } else {
-            console.log("unfollow:", err);
-            res.send({ message: "Success", error: true });
+            res.status(500).json({ err });
         }
     });
 
@@ -151,16 +128,14 @@ router.post('/follow', function (req, res) {
         thisUsername: req.body.username,
         otherUsername: req.body.otherusername,
     };
-
     db.cypher({
         query: query,
         params: params,
     }, function (err) {
         if (!err) {
-            res.send({ message: "success", error: false });
+            res.status(201).json({ success: true });
         } else {
-            console.log("follow:", err);
-            res.send({ message: "Success", error: true });
+            res.status(500).json({ err });
         }
     });
 
@@ -174,18 +149,15 @@ router.post('/createuser', function (req, res) {
     var params = {
         thisusername: req.body.username
     };
-
     db.cypher({
         query: query,
         params: params,
     }, function (err, results) {
         if (err) {
-            console.log(err);
-            res.send({ message: "failed", error: true });
+            res.status(500).json({ err });
         } else {
-            res.send({ message: "success", error: false });
+            res.status(201).json({ success: true });
         }
-        //console.log(results);
     });
 });
 

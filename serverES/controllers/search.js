@@ -7,7 +7,7 @@ var client = new elasticsearch.Client({
     log: 'trace'
 });
 
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
     var tennguoidung = req.query.tennguoidung;
     client.search({
         index: 'doancuoiki',
@@ -19,16 +19,20 @@ router.get('/', function(req, res) {
                 }
             }
         }
-        }).then(function (resp) {
+    }).then(function (resp) {
+        if (resp.hits != null) {
             var hits = resp.hits.hits;
-            res.status(200).send({message: "Success", error: false, dsTimKiem: hits});
-        }, function (err) {
-            res.status(404).send({message: "Failed", error: true});
-            console.trace(err.message);
-        });
+            res.status(201).json({ dsTimKiem: hits });
+        } else {
+            res.status(404).json({message: 'Không tìm thấy' });
+        }
+
+    }, function (err) {
+        res.status(500).json({err});
+    });
 });
 
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
     var tennguoidung = req.body.tennguoidung;
     var tendangnhap = req.body.tendangnhap;
     client.index({
@@ -40,13 +44,17 @@ router.post('/', function(req, res) {
             post_date: new Date()
         },
         refresh: true
-        }, function( err, result ) {
-            if (err) {
-                res.status(404).send({message: "Failed", error: true});
+    }, function (err, result) {
+        if (err) {
+             res.status(500).json({err});
+        } else {
+            if (result != null) {
+                res.status(201).json({success: true})
             } else {
-                res.status(200).send({message: "Success", error: false})
+                res.status(404).json({message: 'Them tim kiem that bai'})
             }
-        });
+        }
+    });
 });
 
 

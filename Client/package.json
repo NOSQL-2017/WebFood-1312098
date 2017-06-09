@@ -4,7 +4,7 @@
   "description": "Mang xa hoi anh",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js webpack-dev-server --inline --content-base . --history-api-fallback"
+    "start": " node server.js webpack-dev-server --inline --content-base . --history-api-fallback"
   },
   "keywords": [
     "images",

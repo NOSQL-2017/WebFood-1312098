@@ -15,4 +15,5 @@ RUN npm install
 COPY . /usr/src/doancuoiki/Client
 
 EXPOSE 3000
+RUN npm rebuild node-sass
 CMD  webpack && npm start
