@@ -31,17 +31,38 @@ Sau khi thực hiện xong giai đoạn 1, sinh viên sẽ được cung cấp m
 * [ ] Layout & partial 
 
 ### Lập trình dữ liệu
-* [ ] Thêm (MSSV1)
-* [ ] Xóa (MSSV1)
-* [ ] Sửa (MSSV1)
-* [ ] Tìm kiếm (MSSV1)
++ Cassandra:
+* [x] Thêm người dùng
+* [ ] Xóa 
+* [ ] Sửa 
+* [ ] Tìm kiếm 
++ Mongo:
+* [x] Thêm 
+* [x] Xóa 
+* [ ] Sửa 
+* [x] Tìm kiếm 
++ Neo4j:
+* [x] Thêm 
+* [x] Xóa 
+* [ ] Sửa 
+* [x] Tìm kiếm 
++ ElasticSearch:
+* [x] Thêm 
+* [ ] Xóa 
+* [ ] Sửa 
+* [x] Tìm kiếm 
++ Redis:
+* [x] Thêm 
+* [x] Xóa 
+* [ ] Sửa 
+* [x] Tìm kiếm 
 
 ### Xử lý lỗi
-* [ ] Xử lý lỗi trong cùng trang web (MSSV1)
-* [ ] Xử lý lỗi dùng trang web riêng (MSSV1)
+* [x] Xử lý lỗi trong cùng trang web 
+* [x] Xử lý lỗi dùng trang web riêng 
    * [ ] 401 (MSSV1)
-   * [ ] 404 (MSSV1)
-   * [ ] 500 (MSSV1)
+   * [x] 404 (MSSV1)
+   * [x] 500 (MSSV1)
 
 ### Tương tác API khác
 Liệt kê các API nhóm đã sử dụng được ở đây
@@ -50,13 +71,11 @@ Liệt kê các API nhóm đã sử dụng được ở đây
 * [ ] ...
 
 ## Lập trình client
-* [ ] Kiểm tra dữ liệu (MSSV1)
-* [ ] Animation (MSSV1)
-* [ ] Thao tác DOM (MSSV1)
-* [ ] AJAX (MSSV1)
+* [x] Sử dụng frameword React + Redux
+
 
 ## Bảo mật
-* [ ] Chứng thực (MSSV1)
+* [x] Sử dụng Token khi đăng ký và đăng nhập vào trang web.
 * [ ] Phân quyền sử dụng một số trang web với nhiều vai trò khác nhau (MSSV1)
    * [ ] Không cho phép thao tác vào trang web khi không có quyền (MSSV1)
    * [ ] Thể hiện các chức năng khác nhau trên cùng giao diện khi người dùng có quyền khác nhau (MSSV1)
@@ -68,6 +87,10 @@ Liệt kê các API nhóm đã sử dụng được ở đây
 * [ ] Quản lý quan hệ của người dùng (Graph Database)
 * [ ] Theo dõi truy xuất của hệ thống (Column Family)
 * [ ] Cân bằng tải ứng dụng bằng proxy
+* [x] Quản lý thông tin ảnh bằng redis
+* [x] Quản lý danh sách ảnh của người dùng bằng mongodb.
+* [x] Quản lý người dùng bằng Cassandra.
+* [x] Quản lý theo dõi, thích ảnh bằng Neo4j
 
 ## Nâng cao
 * [ ] ...

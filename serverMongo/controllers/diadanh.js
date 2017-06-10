@@ -46,13 +46,13 @@ router.get('/laydsAnh', function (req, res) {
     var madiadanh = req.query.madiadanh;
     diaDanh.find({ madiadanh: madiadanh }, function (err, diadanh) {
         if (err) {
-            res.status(500).json({ message: err});
+            res.status(500).json({ message: err });
         } else {
             if (diadanh != null) {
                 var dsAnh = diadanh.dsAnh;
-                res.status(201).json({dsAnh});
+                res.status(201).json({ dsAnh });
             } else {
-                res.status(404).json({message: 'Không có ds ảnh nào'})
+                res.status(404).json({ message: 'Không có ds ảnh nào' })
             }
 
         }
@@ -65,7 +65,7 @@ router.post('/luuDiaDanh', function (req, res) {
 
     diaDanh.find({ madiadanh: madiadanh }, function (err, diadanh) {
         if (err) {
-            res.status(500).json({ message: err});
+            res.status(500).json({ message: err });
         } else {
             if (!diadanh) {
                 res.status(404).json({ message: 'Địa danh đã tồn tại' });
@@ -77,9 +77,9 @@ router.post('/luuDiaDanh', function (req, res) {
 
                 diaDanh.create(dd, function (err, diadanhmoi) {
                     if (err) {
-                        res.status(500).json({ message: err});
+                        res.status(500).json({ message: err });
                     } else {
-                        res.status(201).json({success: true})
+                        res.status(201).json({ success: true })
                     }
                 })
             }
@@ -92,22 +92,32 @@ router.delete('/xoadiadanh', function (req, res) {
     var madiadanh = req.query.madiadanh;
     diaDanh.findOneAndRemove({ madiadanh: madiadanh }, function (err) {
         if (err) {
-            res.status(500).json({ message: err});
+            res.status(500).json({ message: err });
         } else {
-            res.status(201).json({success: true});
+            res.status(201).json({ success: true });
         }
     })
 })
 
-router.delete('/xoaanhdiadanh', function (req, res) {
+router.delete('/', function (req, res) {
     var maanh = req.query.maanh;
-    diaDanh.findOneAndRemove({ "dsAnh.maanh": maanh }, function (err) {
-        if (err) {
-            res.status(500).json({ message: err});
-        } else {
-            res.status(201).json({success: true});
-        }
-    })
+    var madiadanh = req.query.madiadanh;
+    if (maanh != null && madiadanh != null) {
+        diaDanh.update(
+            { madiadanh: madiadanh },
+            { $pull: { dsAnh: { maanh: maanh } } },
+            { safe: true },
+            function xoaAnh(err, result) {
+                if (err) {
+                    res.status(500).json(err);
+                } else {
+                    res.status(201).json({ success: true });
+                }
+            }
+        )
+    } else {
+        res.status(404).json({ message: 'Không truyền đúng dữ liệu' });
+    }
 })
 
 router.post('/luuAnhVaoDiaDanh', function (req, res) {
@@ -115,36 +125,36 @@ router.post('/luuAnhVaoDiaDanh', function (req, res) {
     var url = req.body.url;
     var madiadanh = req.body.madiadanh;
     var sohuu = req.body.sohuu;
-    if (madiadanh != null && url != null && maanh != null && sohuu != null ) {
+    if (madiadanh != null && url != null && maanh != null && sohuu != null) {
         diaDanh.findOneAndUpdate(
-        { madiadanh: madiadanh },
-        {
-            $push: {
-                "dsAnh": {
-                    maanh: maanh,
-                    url: url,
-                    sohuu: sohuu
+            { madiadanh: madiadanh },
+            {
+                $push: {
+                    "dsAnh": {
+                        maanh: maanh,
+                        url: url,
+                        sohuu: sohuu
+                    }
                 }
-            }
-        },
-        { safe: true, upsert: true, new: true },
-        function (err, model) {
-            if (err) {
-                res.status(500).json(err);
-            } else {
-                if (model != null) {
-                    res.status(201).json({ success: true });
+            },
+            { safe: true, upsert: true, new: true },
+            function (err, model) {
+                if (err) {
+                    res.status(500).json(err);
                 } else {
-                    res.status(404).json({message: 'Không lưu được ảnh' });
+                    if (model != null) {
+                        res.status(201).json({ success: true });
+                    } else {
+                        res.status(404).json({ message: 'Không lưu được ảnh' });
+                    }
+
                 }
-                
             }
-        }
-    )
+        )
     } else {
-        res.status(404).json({message: 'Không truyền đúng dữ liệu' });
+        res.status(404).json({ message: 'Không truyền đúng dữ liệu' });
     }
-   
+
 })
 
 

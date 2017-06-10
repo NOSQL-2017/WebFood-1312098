@@ -1,4 +1,4 @@
-import { UPLOAD_IMAGES_SUCCESS, REMOVE_IMAGE } from '../actions/types';
+import { UPLOAD_IMAGES_SUCCESS, REMOVE_IMAGE ,LAY_DS_ANH_SH, XOA_ANH_SH} from '../actions/types';
 import isEmpty from 'lodash/isEmpty';
 import shortid from 'shortid';
 import remove from 'lodash/remove';

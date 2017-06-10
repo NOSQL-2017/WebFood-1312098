@@ -24,6 +24,7 @@ if (localStorage.jwtToken) {
   setAuthorizationToken(localStorage.jwtToken);
   store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
 }
+
 require('style!css!bootstrap/dist/css/bootstrap.css')
 require('style!css!./styles/css/Greeting.css');
 require('style!css!./styles/css/Public.css');

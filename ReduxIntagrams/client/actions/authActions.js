@@ -1,7 +1,7 @@
 import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import jwtDecode from 'jwt-decode';
-import { SET_CURRENT_USER } from './types';
+import { SET_CURRENT_USER, TIM_KIEM_NGUOI_DUNG } from './types';
 
 export function setCurrentUser(user) {
   return {
@@ -31,11 +31,7 @@ export function login(data) {
 
 export function layThongTinNguoiDung(tendangnhap) {
   return dispatch => {
-    return axios.get('http://localhost:8085/api/nguoidung/', {
-      params: {
-        tendangnhap
-      }
-    })
+    return axios.get(`/api/users/${tendangnhap}`);
   }
 }
 
@@ -89,11 +85,29 @@ export function layNguoiDangTheoiDoi(tendangnhap) {
   }
 }
 
-export function timKiem(keyword) {
+export function kiemTraTheoDoi(tennguoitheodoi, tennguoiduoctheodoi) {
+  return dispatch => {
+    return axios.get('http://localhost:8081/api/theodoi/checkfollowing', {
+      params: {
+        username: tennguoitheodoi,
+        otherusername: tennguoiduoctheodoi
+      }
+    })
+  }
+}
+
+export function timKiemThanhCong(data) {
+  return {
+    type: 'TIM_KIEM_NGUOI_DUNG',
+    data
+  }
+}
+
+export function timKiem(hoten) {
   return dispatch => {
     return axios.get('http://localhost:8083/api/search', {
       params: {
-        tennguoidung: tennguoidung
+        hoten: hoten
       }
     })
   }

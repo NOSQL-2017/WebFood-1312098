@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var redis = require('redis');
-client = redis.createClient('http://dbredis:6379');
+client = redis.createClient('redis://dbredis:6379');
 
 client.on("error", function (err) {
     console.log("Error " + err);
@@ -44,7 +44,6 @@ router.post('/', function (req, res) {
 
 router.delete('/', function (req, res) {
     var maanh = req.query.maanh;
-
     client.del(maanh, function (error, reply) {
         if (error) {
             res.send(500).json(error);

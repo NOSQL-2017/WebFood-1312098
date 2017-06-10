@@ -6,3 +6,4 @@ export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const REMOVE_IMAGE= 'REMOVE_IMAGE';
 export const LAY_DS_ANH_SH = 'LAY_DS_ANH_SH';  
 export const XOA_ANH_SH = 'XOA_ANH_SH';  
+export const TIM_KIEM_NGUOI_DUNG = 'TIM_KIEM_NGUOI_DUNG';  

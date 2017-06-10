@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { layDsAnhSoHuu } from '../../actions/images';
-import ImageLibrary from './ImageLibarary';
+import ImageLibrary from './ImageLibrary';
 import map from 'lodash/map';
 
 var Library = React.createClass({

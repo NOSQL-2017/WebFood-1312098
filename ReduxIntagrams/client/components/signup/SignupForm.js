@@ -10,6 +10,7 @@ import {browserHistory} from 'react-router';
 var SignupForm = React.createClass({
   getInitialState: function () {
     return {
+      name: '',
       username: '',
       email: '',
       password: '',
@@ -70,9 +71,17 @@ var SignupForm = React.createClass({
       <form onSubmit={this.onSubmit}>
         <h1>Join our community!</h1>
 
+         <TextFieldGroup
+          error={errors.username}
+          label="Họ tên"
+          onChange={this.onChange}
+          value={this.state.name}
+          field="name"
+        />
+
         <TextFieldGroup
           error={errors.username}
-          label="Username"
+          label="Tên đăng nhập"
           onChange={this.onChange}
           checkUserExists={this.checkUserExists}
           value={this.state.username}
@@ -89,7 +98,7 @@ var SignupForm = React.createClass({
 
         <TextFieldGroup
           error={errors.password}
-          label="Password"
+          label="Mật khẩu"
           onChange={this.onChange}
           value={this.state.password}
           field="password"
@@ -98,7 +107,7 @@ var SignupForm = React.createClass({
 
         <TextFieldGroup
           error={errors.passwordConfirmation}
-          label="Password Confirmation"
+          label="Xác nhận lại mật khẩu"
           onChange={this.onChange}
           value={this.state.passwordConfirmation}
           field="passwordConfirmation"
@@ -107,7 +116,7 @@ var SignupForm = React.createClass({
 
         <div className="form-group">
           <button disabled={this.state.isLoading || this.state.invalid} className="btn btn-primary btn-lg">
-            Sign up
+            Đăng kí
           </button>
         </div>
       </form>

@@ -8,14 +8,14 @@ var client = new elasticsearch.Client({
 });
 
 router.get('/', function (req, res) {
-    var tennguoidung = req.query.tennguoidung;
+    var hoten = req.query.hoten;
     client.search({
         index: 'doancuoiki',
         type: 'users',
         body: {
             query: {
                 match: {
-                    tennguoidung: tennguoidung
+                    hoten: hoten
                 }
             }
         }
@@ -33,14 +33,14 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    var tennguoidung = req.body.tennguoidung;
     var tendangnhap = req.body.tendangnhap;
+    var hoten = req.body.hoten;
     client.index({
         index: 'doancuoiki',
         type: 'users',
         body: {
+            hoten: hoten,
             tendangnhap: tendangnhap,
-            tennguoidung: tennguoidung,
             post_date: new Date()
         },
         refresh: true

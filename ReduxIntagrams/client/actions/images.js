@@ -1,7 +1,7 @@
 import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import jwtDecode from 'jwt-decode';
-import { UPLOAD_IMAGES_SUCCESS, REMOVE_IMAGE, LAY_DS_ANH_SH_TC } from './types';
+import { UPLOAD_IMAGES_SUCCESS, REMOVE_IMAGE, LAY_DS_ANH_SH, XOA_ANH_SH } from './types';
 var sha1 = require('sha1');
 var superagent = require('superagent')
 import 'whatwg-fetch'
@@ -126,11 +126,10 @@ export function layDsAnhSoHuu(sohuu) {
             params: {
                 sohuu
             }
-        }).then(function (response) {
-            if (response.data.success == true) {
-                console.log(response.data.dsAnh);
-                dispatch(layDsAnhSoHuuTC(response.data.dsAnh));
-            }
+        }).then(function (res) {
+             dispatch(layDsAnhSoHuuTC(res.data.dsAnh));   
+        }).catch(function(err) {
+            console.log('Lay danh sách thất bại')
         })
     }
 }
@@ -142,21 +141,23 @@ export function xoaAnhSoHuuThanhCong(maanh) {
     }
 }
 
-export function xoaAnhSoHuu(maanh) {
+export function xoaAnhSoHuu(maanh,sohuu,madiadanh) {
     return dispatch => {
 
         function xoaAnhMongo1() {
             return axios.delete('http://localhost:8082/api/sohuuanh', {
                 params: {
-                    maanh
+                    maanh,
+                    sohuu
                 }
             })
         }
 
         function xoaAnhMongo2() {
-            return axios.delete('http://localhost:8082/api/diadanh/xoaanhdiadanh', {
+            return axios.delete('http://localhost:8082/api/diadanh/', {
                 params: {
-                    maanh
+                    maanh,
+                    madiadanh
                 }
             })
         }
@@ -170,7 +171,7 @@ export function xoaAnhSoHuu(maanh) {
         }
 
         function xoaAnhNeo() {
-            return axios.delete('http://localhost:8081/api/deleteimage', {
+            return axios.delete('http://localhost:8081/api/thichanh/deleteimage', {
                 params: {
                     images_id: maanh
                 }
@@ -202,6 +203,15 @@ export function demSoLuongThich(maanh) {
             params: {
                 images_id: maanh
             }
+        })
+    }
+}
+
+export function kiemTraThichAnh(nguoidung, maanh) {
+    return dispatch => {
+        return axios.get('http://localhost:8081/api/thichanh/checklike', {
+            username: nguoidung,
+            images_id: maanh
         })
     }
 }

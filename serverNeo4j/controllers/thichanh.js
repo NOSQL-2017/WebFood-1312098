@@ -44,9 +44,9 @@ router.get('/checklike', function (req, res) {
             var following = [];
             var others = [];
             if (results['0']["COUNT(rel)"] == 0) {
-                res.status(201).json({ follow: false })
+                res.status(201).json({ like: false })
             } else {
-                res.status(201).json({ follow: true })
+                res.status(201).json({ like: true })
             }
         }
 
@@ -98,6 +98,7 @@ router.post('/like', function (req, res) {
 
 router.delete('/deleteimage', function (req, res) {
     var query = 'match (img:Images {img_id: {images_id}}) optional match ()-[r:like]->(img) delete r, img';
+   
     var params = {
         images_id: req.query.images_id
     };

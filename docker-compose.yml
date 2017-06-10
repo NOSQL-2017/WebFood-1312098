@@ -9,13 +9,6 @@ services:
       - ./ReduxIntagrams:/usr/src/doancuoiki/ReduxIntagrams
     links:
       - cassandra
-  # web:
-  #   build: ./Client
-  #   container_name: WEB_CLIENT
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./Client:/usr/src/doancuoiki/Client
   webneodb: 
     build: ./serverNeo4j
     container_name: WEB_API_NEO4J
@@ -25,24 +18,24 @@ services:
       - ./serverNeo4j:/usr/src/doancuoiki/serverNeo4j
     links:
       - dbneo4j
-  webmgdb:
-    build: ./serverMongo
-    container_name: WEB_API_MONGO
-    ports:
-      - "8082:8082"
-    volumes:
-      - ./serverMongo:/usr/src/doancuoiki/serverMongo
-    links:
-      - dbmongo
-  # webes:
-  #   build: ./serverES
-  #   container_name: WEB_API_ES
+  # webmgdb:
+  #   build: ./serverMongo
+  #   container_name: WEB_API_MONGO
   #   ports:
-  #     - "8083:8083"
+  #     - "8082:8082"
   #   volumes:
-  #     - ./serverES:/usr/src/doancuoiki/serverES
+  #     - ./serverMongo:/usr/src/doancuoiki/serverMongo
   #   links:
-  #     - esdb
+  #     - dbmongo
+  webes:
+    build: ./serverES
+    container_name: WEB_API_ES
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./serverES:/usr/src/doancuoiki/serverES
+    links:
+      - esdb
   webredis: 
     build: ./serverRedis
     container_name: WEB_API_REDIS
@@ -59,21 +52,21 @@ services:
       - "7474:7474"
     environment:
       - NEO4J_AUTH=none
-  dbmongo:
-    image: mongo:3.0.15
-    container_name: MG_DB
-    ports:
-      - "27017:27017"
-  # esdb:
-  #   build: elasticsearch/
-  #   container_name: ES_DB
-  #   volumes:
-  #     - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+  # dbmongo:
+  #   image: mongo
+  #   container_name: MG_DB
   #   ports:
-  #     - "9200:9200"
-  #     - "9300:9300"
-  #   environment:
-  #     ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #     - "27017:27017"
+  esdb:
+    build: elasticsearch/
+    container_name: ES_DB
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
   dbredis: 
     image: redis
     container_name: REDIS_DB

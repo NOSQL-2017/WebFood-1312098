@@ -9,7 +9,7 @@ import config from '../config';
 // import User from '../models/user';
 let client = new cassandra.Client({ contactPoints: ['cassandra'] });
 let useKS = "USE doancuoiki"
-let createTB = "create table if not EXISTS users(username varchar, password varchar, email varchar,image text,role varchar,PRIMARY KEY (username));"
+let createTB = "create table if not EXISTS users(username varchar, password varchar, email varchar, name varchar,image text,role varchar,PRIMARY KEY (username));"
 let createkeyspace = "CREATE KEYSPACE IF NOT EXISTS doancuoiki WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1};"
 let createAdmin = 'INSERT INTO doancuoiki.users(username,password,role) values(?,?,?)';
 
@@ -48,10 +48,9 @@ function validateInput(data, otherValidations) {
 
 }
 
-var laythongtin = 'SELECT * FROM  doancuoiki.users WHERE username=? '
+var laythongtin = 'SELECT username, email, image, name FROM  doancuoiki.users WHERE username=? '
 router.get('/:identifier', (req, res) => {
-
-
+  console.log(req.params.identifier);
   client.execute(laythongtin, [req.params.identifier], function (err, result) {
     if (err) {
       res.status(404).send({err});
@@ -61,12 +60,12 @@ router.get('/:identifier', (req, res) => {
   })
 });
 
-var themnguoidung = 'INSERT INTO doancuoiki.users(username,password,email,role) values(?,?,?,?)';
+var themnguoidung = 'INSERT INTO doancuoiki.users(username,password,name,email,role) values(?,?,?,?,?)';
 router.post('/', (req, res) => {
   validateInput(req.body, commonValidations).then(({ errors, isValid }) => {
     if (isValid) {
-      var { username, password, email } = req.body;
-      client.execute(themnguoidung, [username, password, email, 'user'], function (err, result) {
+      var { username, password, email,name } = req.body;
+      client.execute(themnguoidung, [username, password,name, email, 'user'], function (err, result) {
         if (err) {
           res.status(500).send({ error: err });
         } else {

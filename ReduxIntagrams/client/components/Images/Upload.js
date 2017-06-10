@@ -21,10 +21,12 @@ let ImagesUpload = React.createClass({
   },
   render: function () {
     let { images } = this.props;
-    console.log('call')
-    let showListImagesUpload = images.listImagesUpload.map((e) => {
-      return <Images key={e.id} image={e.image} id={e.id} />
-    })
+    let showListImagesUpload
+    if (images.listImagesUpload != null) {
+      showListImagesUpload = images.listImagesUpload.map((e) => {
+        return <Images key={e.id} image={e.image} id={e.id} />
+      })
+    }
     return (
       <section >
         <div className="container">
