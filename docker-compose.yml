@@ -18,15 +18,15 @@ services:
       - ./serverNeo4j:/usr/src/doancuoiki/serverNeo4j
     links:
       - dbneo4j
-  # webmgdb:
-  #   build: ./serverMongo
-  #   container_name: WEB_API_MONGO
-  #   ports:
-  #     - "8082:8082"
-  #   volumes:
-  #     - ./serverMongo:/usr/src/doancuoiki/serverMongo
-  #   links:
-  #     - dbmongo
+  webmgdb:
+    build: ./serverMongo
+    container_name: WEB_API_MONGO
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./serverMongo:/usr/src/doancuoiki/serverMongo
+    links:
+      - dbmongo
   webes:
     build: ./serverES
     container_name: WEB_API_ES
@@ -36,15 +36,15 @@ services:
       - ./serverES:/usr/src/doancuoiki/serverES
     links:
       - esdb
-  # webredis: 
-  #   build: ./serverRedis
-  #   container_name: WEB_API_REDIS
-  #   ports:
-  #     - "8084:8084"
-  #   volumes:
-  #     - ./serverRedis:/usr/src/doancuoiki/serverRedis
-  #   links:
-  #     - dbredis
+  webredis: 
+    build: ./serverRedis
+    container_name: WEB_API_REDIS
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./serverRedis:/usr/src/doancuoiki/serverRedis
+    links:
+      - dbredis
   dbneo4j:
     image: neo4j:2.3
     container_name: NEO4J_DB
@@ -52,11 +52,11 @@ services:
       - "7474:7474"
     environment:
       - NEO4J_AUTH=none
-  # dbmongo:
-  #   image: mongo
-  #   container_name: MG_DB
-  #   ports:
-  #     - "27017:27017"
+  dbmongo:
+    image: mongo
+    container_name: MG_DB
+    ports:
+      - "27017:27017"
   esdb:
     build: elasticsearch/
     container_name: ES_DB
@@ -67,11 +67,11 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-  # dbredis: 
-  #   image: redis
-  #   container_name: REDIS_DB
-  #   ports: 
-  #     - "6379:6379"
+  dbredis: 
+    image: redis
+    container_name: REDIS_DB
+    ports: 
+      - "6379:6379"
   cassandra:
     image: cassandra
     container_name: CSDRA_DB
