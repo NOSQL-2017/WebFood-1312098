@@ -52,7 +52,7 @@ let LoginForm = React.createClass( {
 
         <TextFieldGroup
           field="identifier"
-          label="Username / Email"
+          label="Tên đăng nhập"
           value={identifier}
           error={errors.identifier}
           onChange={this.onChange}
@@ -60,7 +60,7 @@ let LoginForm = React.createClass( {
 
         <TextFieldGroup
           field="password"
-          label="Password"
+          label="Mật khẩu"
           value={password}
           error={errors.password}
           onChange={this.onChange}

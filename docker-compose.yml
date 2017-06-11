@@ -36,15 +36,15 @@ services:
       - ./serverES:/usr/src/doancuoiki/serverES
     links:
       - esdb
-  webredis: 
-    build: ./serverRedis
-    container_name: WEB_API_REDIS
-    ports:
-      - "8084:8084"
-    volumes:
-      - ./serverRedis:/usr/src/doancuoiki/serverRedis
-    links:
-      - dbredis
+  # webredis: 
+  #   build: ./serverRedis
+  #   container_name: WEB_API_REDIS
+  #   ports:
+  #     - "8084:8084"
+  #   volumes:
+  #     - ./serverRedis:/usr/src/doancuoiki/serverRedis
+  #   links:
+  #     - dbredis
   dbneo4j:
     image: neo4j:2.3
     container_name: NEO4J_DB
@@ -67,11 +67,11 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-  dbredis: 
-    image: redis
-    container_name: REDIS_DB
-    ports: 
-      - "6379:6379"
+  # dbredis: 
+  #   image: redis
+  #   container_name: REDIS_DB
+  #   ports: 
+  #     - "6379:6379"
   cassandra:
     image: cassandra
     container_name: CSDRA_DB

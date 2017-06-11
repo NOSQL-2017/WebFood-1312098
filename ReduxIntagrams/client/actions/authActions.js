@@ -1,7 +1,7 @@
 import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import jwtDecode from 'jwt-decode';
-import { SET_CURRENT_USER, TIM_KIEM_NGUOI_DUNG } from './types';
+import { SET_CURRENT_USER, TIM_KIEM_NGUOI_DUNG, SET_CURRENT_IMAGES } from './types';
 
 export function setCurrentUser(user) {
   return {
@@ -10,11 +10,19 @@ export function setCurrentUser(user) {
   };
 }
 
+export function setCurrentImages(images) {
+  return {
+    type: SET_CURRENT_IMAGES,
+    images
+  }
+}
+
 export function logout() {
   return dispatch => {
     localStorage.removeItem('jwtToken');
     setAuthorizationToken(false);
     dispatch(setCurrentUser({}));
+    dispatch(setCurrentImages({}));
   }
 }
 

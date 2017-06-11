@@ -22,10 +22,9 @@ let Greetings = React.createClass({
                 <div className="row">
                   {/* Slide Text Layer */}
                   <div className="slide-text slide_style_left">
-                    <h1 data-animation="animated zoomInRight">Bootstrap Carousel</h1>
-                    <p data-animation="animated fadeInLeft">Bootstrap carousel now touch enable slide.</p>
-                    <a href="http://bootstrapthemes.co/" target="_blank" className="btn btn-default" data-animation="animated fadeInLeft">select one</a>
-                    <a href="http://bootstrapthemes.co/" target="_blank" className="btn btn-primary" data-animation="animated fadeInRight">select two</a>
+                    <h1 data-animation="animated zoomInRight">ReduxIntagrams</h1>
+                    <p data-animation="animated fadeInLeft">Chia sẽ hình ảnh</p>
+                   
                   </div>
                 </div>
               </div>
@@ -38,10 +37,8 @@ let Greetings = React.createClass({
               <div className="bs-slider-overlay" />
               {/* Slide Text Layer */}
               <div className="slide-text slide_style_center">
-                <h1 data-animation="animated flipInX">Bootstrap touch slider</h1>
-                <p data-animation="animated lightSpeedIn">Make Bootstrap Better together.</p>
-                <a href="http://bootstrapthemes.co/" target="_blank" className="btn btn-default" data-animation="animated fadeInUp">select one</a>
-                <a href="http://bootstrapthemes.co/" target="_blank" className="btn btn-primary" data-animation="animated fadeInDown">select two</a>
+                <h1 data-animation="animated flipInX">Theo dõi</h1>
+                <p data-animation="animated lightSpeedIn">Theo dõi mọi người</p>
               </div>
             </div>
             {/* End of Slide */}
@@ -52,10 +49,7 @@ let Greetings = React.createClass({
               <div className="bs-slider-overlay" />
               {/* Slide Text Layer */}
               <div className="slide-text slide_style_right">
-                <h1 data-animation="animated zoomInLeft">Beautiful Animations</h1>
-                <p data-animation="animated fadeInRight">Lots of css3 Animations to make slide beautiful .</p>
-                <a href="http://bootstrapthemes.co/" target="_blank" className="btn btn-default" data-animation="animated fadeInLeft">select one</a>
-                <a href="http://bootstrapthemes.co/" target="_blank" className="btn btn-primary" data-animation="animated fadeInRight">select two</a>
+               
               </div>
             </div>
             {/* End of Slide */}

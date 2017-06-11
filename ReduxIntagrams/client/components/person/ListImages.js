@@ -36,6 +36,7 @@ let ListImages = React.createClass({
     Like: function (e) {
         e.preventDefault();
         let { dispatch, auth, maanh } = this.props;
+        let {numLike} = this.state;
         dispatch(thichAnh(maanh, auth.user.username))
             .then(
             res => {
@@ -46,6 +47,7 @@ let ListImages = React.createClass({
     UnLike: function (e) {
         e.preventDefault();
         let { dispatch, auth, maanh } = this.props;
+        let {numLike} = this.state;
         dispatch(huyThichAnh(maanh, auth.user.username))
             .then(
             res => {

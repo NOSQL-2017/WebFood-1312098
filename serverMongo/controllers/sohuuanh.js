@@ -19,7 +19,7 @@ router.get('/', function (req, res) {
                     var dsAnh = result.dsAnh || [];
                     res.status(201).json({ dsAnh });
                 } else {
-                    res.status(404).json({ message: 'Bạn chưa có hình nào cả.' })
+                    res.status(404).json({dsAnh: [] })
                 }
             }
         })
@@ -28,6 +28,36 @@ router.get('/', function (req, res) {
     }
 
 });
+
+
+router.get('/users', function (req, res) {
+    Anh.find({}).limit(5).exec(function(err, data) {
+        if (err) {
+            res.status(500).json({message: err});
+        } else {
+            if (data) {
+                res.status(201).json({data});
+            } else {
+                res.status(404).json({data: []})
+            }
+        }
+    })
+})
+
+router.get('/demAnhDaDang', function(req, res) {
+    var sohuu = req.query.sohuu;
+    Anh.findOne({sohuu: sohuu}, function(err, data) {
+        if (err) {
+            res.status(500).json({message: err});
+        } else {
+            if (data) {
+                res.status(201).json({soanh: data.dsAnh.length});
+            } else {
+                res.status(404).json({soanh: 0})
+            }
+        }
+    })
+})
 
 
 

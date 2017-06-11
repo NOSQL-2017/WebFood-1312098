@@ -1,4 +1,4 @@
-import { UPLOAD_IMAGES_SUCCESS, REMOVE_IMAGE ,LAY_DS_ANH_SH, XOA_ANH_SH} from '../actions/types';
+import { UPLOAD_IMAGES_SUCCESS, REMOVE_IMAGE ,LAY_DS_ANH_SH, XOA_ANH_SH, SET_CURRENT_IMAGES} from '../actions/types';
 import isEmpty from 'lodash/isEmpty';
 import shortid from 'shortid';
 import remove from 'lodash/remove';
@@ -8,6 +8,11 @@ import remove from 'lodash/remove';
 
 export default  (state = {listImagesUpload: [], listImages: []}, action) => {
     switch (action.type) {
+        case SET_CURRENT_IMAGES: 
+            return {
+                listImagesUpload: [],
+                listImages: []
+            }
         case UPLOAD_IMAGES_SUCCESS:
             var update = state.listImagesUpload || [];
             update.push({

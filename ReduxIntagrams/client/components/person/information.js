@@ -1,5 +1,7 @@
 import React from 'react';
-import {kiemTraTheoDoi, layThongTinNguoiDung, theoDoi, huyTheoDoi, demSoNguoiDangTheoiDoi, demSoNguoiTheoDoi } from '../../actions/authActions';
+import { kiemTraTheoDoi, layThongTinNguoiDung, theoDoi, huyTheoDoi, demSoNguoiDangTheoiDoi, demSoNguoiTheoDoi } from '../../actions/authActions';
+import { demAnhDaDang } from '../../actions/images';
+
 import { connect } from 'react-redux';
 
 
@@ -9,12 +11,13 @@ let Information = React.createClass({
             thongtin: {},
             numFollow: '',
             numFollowing: '',
+            numImages: '',
             isFollow: false
         }
     },
     componentWillMount: function () {
-        
-        let { dispatch,  auth , username} = this.props;
+
+        let { dispatch, auth, username } = this.props;
 
         dispatch(layThongTinNguoiDung(username))
             .then(
@@ -39,14 +42,20 @@ let Information = React.createClass({
             )
         dispatch(kiemTraTheoDoi(auth.user.username, username))
             .then(
-                res => {
-                    this.setState({isFollow: res.data.follow})
-                }
+            res => {
+                this.setState({ isFollow: res.data.follow })
+            }
             )
-        
+        dispatch(demAnhDaDang(username))
+            .then(
+            res => {
+                this.setState({ numImages: res.data.soanh })
+            }
+            )
+
     },
     Follow: function () {
-        let { dispatch, auth, username} = this.props;
+        let { dispatch, auth, username } = this.props;
         dispatch(theoDoi(auth.user.username, username))
             .then(
             res => { this.setState({ isFollow: true }) },
@@ -54,7 +63,7 @@ let Information = React.createClass({
             )
     },
     UnFollow: function () {
-        let { dispatch, auth , username} = this.props;
+        let { dispatch, auth, username } = this.props;
         dispatch(huyTheoDoi(auth.user.username, username))
             .then(
             res => { this.setState({ isFollow: false }) },
@@ -62,7 +71,7 @@ let Information = React.createClass({
             )
     },
     render: function () {
-        let { thongtin, isFollow } = this.state;
+        let { thongtin, isFollow, numImages } = this.state;
         let that = this;
         function buttonFollow() {
             return (
@@ -97,8 +106,8 @@ let Information = React.createClass({
                         <div className="data">
                             <ul>
                                 <li>
-                                    2,934
-                <span>Upload</span>
+                                    {numImages}
+                                    <span>Images</span>
                                 </li>
                                 <li>
                                     {this.state.numFollow}

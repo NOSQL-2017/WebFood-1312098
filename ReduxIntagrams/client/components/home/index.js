@@ -16,17 +16,21 @@ let Home = React.createClass({
             .then(
             res => {
                 this.setState({ dsTheoDoi: res.data.dsTheoDoi })
+            },
+            err => {
+                console.log(err);
             }
             )
     },
     render: function () {
         let { auth } = this.props;
+        console.log(this.state.dsTheoDoi)
         let listImages = this.state.dsTheoDoi.map((e, k) => {
             return <Images sohuu={e.username} key={k} />
         })
         return (
             <div>
-                {auth.isAuthenticated == false ? <Greetings /> : listImages}
+                {auth.isAuthenticated == false ? <Greetings /> : listImages}         
             </div>
         )
     }

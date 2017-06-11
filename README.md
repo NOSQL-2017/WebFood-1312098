@@ -3,7 +3,7 @@
 **project-1312098** là repository cho đồ án nhóm. Nhóm tối đa 4 thành viên.
 
 Thành viên:
-* [x] **1312098** - Phùng Văn Dũng - dungvatoi12 - dungvaatoi12@gmail.com - 100%
+* [x] **1312098** - Phùng Văn Dũng - dungvatoi12 - dungvatoi12@gmail.com - 100%
 
 URL: **URL hosting của bài tập**
 Báo cáo: **URL Github Page của đề tài**
@@ -97,12 +97,21 @@ Liệt kê các API nhóm đã sử dụng được ở đây
 
 ## Chức năng đã thực hiện
 Các **yêu cầu chức năng** (check và ghi MSSV vào các phần chức năng đã thực hiện)
-* [ ] Yêu cầu 1. (MSSV1)
+* [x] Upload hình ảnh.
+* [x] Xem lại hình đã upload.
+* [x] Xem cộng đồng đăng hình ảnh.
+* [x] Theo dõi người dùng.
+* [x] Tìm kiếm theo họ tên.
+* [x] Xem hình ảnh của những người mình đã theo dõi.
 
 ## Chức năng
 Các **yêu cầu chức năng** (check và ghi MSSV vào các phần chức năng đã thực hiện)
 * [ ] Yêu cầu 1. (MSSV1)
 
+## Chú ý: 
+* Khi chạy lần đầu cần cài các module cho tất cả server lẫn client.
+* Khi khởii chạy docker-compose lần đầu cần chạy lại reduxintagrams, webmongo để khởi tạo cơ sở dữ liệu.
+* Khi chạy nếu bị lỗi slow của mongodb thì cần tắt cả 2 mongodb và webmongo chờ cho chạy xong hết rồi chạy lại.
 
 ## Demo
 

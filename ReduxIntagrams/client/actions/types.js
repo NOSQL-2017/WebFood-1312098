@@ -7,3 +7,4 @@ export const REMOVE_IMAGE= 'REMOVE_IMAGE';
 export const LAY_DS_ANH_SH = 'LAY_DS_ANH_SH';  
 export const XOA_ANH_SH = 'XOA_ANH_SH';  
 export const TIM_KIEM_NGUOI_DUNG = 'TIM_KIEM_NGUOI_DUNG';  
+export const SET_CURRENT_IMAGES = 'SET_CURRENT_IMAGES'; 

@@ -4,7 +4,7 @@ import map from 'lodash/map';
 import classnames from 'classnames';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../common/TextFieldGroup';
-import { userSignupRequest, isUserExists } from '../../actions/signupActions';
+import { userSignupRequest, isUserExists,khoiTaoUser } from '../../actions/signupActions';
 import {browserHistory} from 'react-router';
 
 var SignupForm = React.createClass({
@@ -41,7 +41,7 @@ var SignupForm = React.createClass({
         let errors = this.state.errors;
         let invalid;
         if (res.data.user) {
-          errors[field] = 'There is user with such ' + field;
+          errors[field] = 'Tên đăng nhập đã tồn tại';
           invalid = true;
         } else {
           errors[field] = '';
@@ -58,6 +58,7 @@ var SignupForm = React.createClass({
       this.setState({ errors: {}, isLoading: true });
       dispatch(userSignupRequest(this.state)).then(
         () => {
+          dispatch(khoiTaoUser(this.state))
           browserHistory.push('/');
         },
         (err) => this.setState({ errors: err.response.data, isLoading: false })
@@ -72,7 +73,7 @@ var SignupForm = React.createClass({
         <h1>Join our community!</h1>
 
          <TextFieldGroup
-          error={errors.username}
+
           label="Họ tên"
           onChange={this.onChange}
           value={this.state.name}

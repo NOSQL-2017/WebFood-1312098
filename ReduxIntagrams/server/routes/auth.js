@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
 
   client.execute(login, [identifier, password], function (err, result) {
     if (err) {
-      res.status(500).send({ erros: err });
+      res.status(500).send({ errors: err });
     } else {
       if (result.rows['0'] != null) {
         console.log(result);
@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
         res.json({ token });
       }
       else {
-        res.status(401).json({ errors: { form: 'Invalid Credentials' } });
+        res.status(401).json({ errors: 'Tên đăng nhập hoặc mật khẩu không đúng' });
       }
     }
   })

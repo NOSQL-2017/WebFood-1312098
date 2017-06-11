@@ -1,106 +1,65 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import Images from './images';
+import { layDsNguoiDung } from '../../actions/images'
 
-var Public = React.createClass({
-  render: function() {
+let Public = React.createClass({
+  getInitialState: function () {
+    return {
+      dsNguoiDung: []
+    }
+  },
+  componentWillMount: function () {
+    let { dispatch, auth } = this.props;
+    dispatch(layDsNguoiDung())
+      .then(
+      res => {
+        let dsNguoiDung = [];
+        if (res.data.data.length > 0) {
+          dsNguoiDung = res.data.data.filter(e => {
+            return e.sohuu != auth.user.username
+          })
+        }
+        this.setState({ dsNguoiDung: dsNguoiDung })
+      },
+      err => {
+        this.setState({ dsNguoiDung: [] })
+      }
+      )
+  },
+  componentWillUnmount: function () {
+    this.setState({ dsNguoiDung: [] })
+  },
+  render: function () {
+    let { auth } = this.props;
+    let { dsNguoiDung } = this.state;
+    console.log(this.state.dsNguoiDung)
+    let listImages;
+    if (dsNguoiDung.length > 0) {
+      function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+        }
+        return array;
+      }
+      let rand = shuffleArray(dsNguoiDung)
+      listImages = rand.map((e, k) => {
+        return <Images sohuu={e.sohuu} key={k} dsAnh={e.dsAnh} />
+      })
+    }
+
     return (
-
-      <section>
-        <div className="board">
-          {/* <h2>Welcome to IGHALO!<sup>™</sup></h2>*/}
-          <div className="board-inner">
-            <ul className="nav nav-tabs" id="myTab">
-              <div className="liner" />
-              <li className="active">
-                <a href="#food" data-toggle="tab" title="food">
-                  <span className="round-tabs one">
-                    Food
-                  </span> 
-                </a></li>
-              <li><a href="#city" data-toggle="tab" title="city">
-                  <span className="round-tabs two">
-                    {/*<i class="fa fa-glass" aria-hidden="true"></i>*/}
-                    City
-                  </span> 
-                </a>
-              </li>
-              <li><a href="#fashion" data-toggle="tab" title="fashion">
-                  <span className="round-tabs three">
-                    Fashion
-                  </span> </a>
-              </li>
-            </ul></div>
-          <div className="tab-content">
-            <div className="tab-pane fade in active" id="food">
-              <div className="row">
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/food/1/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://kids.nationalgeographic.com/content/dam/kids/photos/articles/Other%20Explore%20Photos/R-Z/Wacky%20Weekend/Wild%20Cats/ww-wild-cats-tiger.adapt.945.1.jpg" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/food/3/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/food/4/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/food/5/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-12*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/food/6/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-              </div>{/*row*/}
-            </div>{/*--food*/}
-            <div className="tab-pane fade" id="city">
-              <div className="row">
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/city/1/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/city/2/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/city/3/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/city/4/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/city/5/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/city/6/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-              </div>{/*row*/}
-            </div>{/*--city*/}
-            <div className="tab-pane fade" id="fashion">
-              <div className="row">
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/fashion/1/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/fashion/7/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/fashion/8/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/fashion/4/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/fashion/5/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-                <div className="col-md-4 col-sm-6 col-xs-6 thumbnail">
-                  <img src="http://lorempixel.com/500/500/fashion/6/" className="img-responsive" />
-                </div>{/*col-md-4 col-sm-6 col-xs-6*/}
-              </div>{/*row*/}
-            </div>{/*three*/}
-          </div>
-        </div>
-      </section>
-    );
+      <div>
+        {listImages}
+      </div>
+    )
   }
-});
 
-module.exports = Public;
+})
+
+module.exports = connect(state => {
+  return state;
+})(Public)

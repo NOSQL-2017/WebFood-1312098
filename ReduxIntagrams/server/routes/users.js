@@ -37,7 +37,7 @@ function validateInput(data, otherValidations) {
 
   return client.execute(getEmail, [data.email]).then( result => {
     if (result.rows['0'] != null) {
-      errors.email = 'There is user with such email';
+      errors.email = 'Email đã tồn tại';
     }
     return {
         errors,

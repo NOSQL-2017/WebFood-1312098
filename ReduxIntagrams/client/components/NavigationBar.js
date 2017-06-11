@@ -38,33 +38,34 @@ let NavigationBar = React.createClass({
     const form = (
       <form className="navbar-form navbar-left" onSubmit={this.onSubmit}>
         <div className="form-group">
-          <input type="text" onChange={this.onChange} name="username" value={this.state.username} className="form-control" placeholder="Search user" required />
+          <input type="text" onChange={this.onChange} name="username" value={this.state.username} className="form-control" placeholder="Nhập tên người dùng" required />
         </div>
-        <button type="submit" className="btn btn-default">Search</button>
+        <button type="submit" className="btn btn-default">Tìm</button>
       </form>
     )
     const userLogin = (
       <ul className="nav navbar-nav">
-        <li className="active"><Link to="#">Home <span className="sr-only">(current)</span></Link></li>
-        <li><Link to="images">Images</Link></li>
-        <li><Link to="library">Library</Link></li>
+        <li className="active"><Link to="#">Trang chủ<span className="sr-only">(current)</span></Link></li>
+        <li><Link to="images">Đăng ảnh</Link></li>
+        <li><Link to="library">Thư viện</Link></li>
+        <li><Link to="public">Cộng đồng</Link></li>
       </ul>
     )
     const userNotLogin = (
       <ul className="nav navbar-nav">
-        <li className="active"><Link to="#">Home <span className="sr-only">(current)</span></Link></li>
+        <li className="active"><Link to="#">Trang chủ<span className="sr-only">(current)</span></Link></li>
       </ul>
     )
     const userLinks = (
       <ul className="nav navbar-nav navbar-right">
-        <li><Link to="/" onClick={this.logout}>Logout</Link></li>
+        <li><Link to="/" onClick={this.logout}>Đăng xuất</Link></li>
       </ul>
     );
 
     const guestLinks = (
       <ul className="nav navbar-nav navbar-right">
-        <li><Link to="/signup">Sign up</Link></li>
-        <li><Link to="/login">Login</Link></li>
+        <li><Link to="/signup">Đăng ký</Link></li>
+        <li><Link to="/login">Đăng nhập</Link></li>
       </ul>
     );
 

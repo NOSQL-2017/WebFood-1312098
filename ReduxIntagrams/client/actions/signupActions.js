@@ -12,10 +12,18 @@ export function setCurrentUser(user) {
 
 export function userSignupRequest(userData) {
   return dispatch => {
-    function signup() {
-      return axios.post('/api/users', userData);
-    }
+   return axios.post('/api/users', userData)
+      .then(function (res) {
+        const token = res.data.token;
+        localStorage.setItem('jwtToken', token);
+        setAuthorizationToken(token);
+        dispatch(setCurrentUser(jwtDecode(token)));
+      })
+  }
+}
 
+export function khoiTaoUser(userData) {
+  return dispatch => {
     function taoNode() {
       return axios.post('http://localhost:8081/api/theodoi/createuser', {
         username: userData.username
@@ -28,14 +36,8 @@ export function userSignupRequest(userData) {
         hoten: userData.name
       })
     }
-
-    return axios.all([signup(), taoNode(), taoSearch()])
-      .then(axios.spread(function (res1, res2, res3) {
-        const token = res1.data.token;
-        localStorage.setItem('jwtToken', token);
-        setAuthorizationToken(token);
-        dispatch(setCurrentUser(jwtDecode(token)));
-      }))
+    axios.all([taoNode(), taoSearch()]);
+     
   }
 }
 

@@ -127,12 +127,39 @@ export function layDsAnhSoHuu(sohuu) {
                 sohuu
             }
         }).then(function (res) {
-             dispatch(layDsAnhSoHuuTC(res.data.dsAnh));   
-        }).catch(function(err) {
+            dispatch(layDsAnhSoHuuTC(res.data.dsAnh));
+        }).catch(function (err) {
             console.log('Lay danh sách thất bại')
         })
     }
 }
+
+export function layDsAnhSoHuu2(sohuu) {
+    return dispatch => {
+        return axios.get('http://localhost:8082/api/sohuuanh', {
+            params: {
+                sohuu
+            }
+        })
+    }
+}
+
+export function layDsNguoiDung() {
+    return dispatch => {
+        return axios.get('http://localhost:8082/api/sohuuanh/users');
+    }
+}
+
+export function demAnhDaDang(sohuu) {
+    return dispatch => {
+        return axios.get('http://localhost:8082/api/sohuuanh/demAnhDaDang', {
+            params: {
+                sohuu
+            }
+        });
+    }
+}
+
 
 export function xoaAnhSoHuuThanhCong(maanh) {
     return {
@@ -141,7 +168,7 @@ export function xoaAnhSoHuuThanhCong(maanh) {
     }
 }
 
-export function xoaAnhSoHuu(maanh,sohuu,madiadanh) {
+export function xoaAnhSoHuu(maanh, sohuu, madiadanh) {
     return dispatch => {
 
         function xoaAnhMongo1() {
@@ -210,8 +237,10 @@ export function demSoLuongThich(maanh) {
 export function kiemTraThichAnh(nguoidung, maanh) {
     return dispatch => {
         return axios.get('http://localhost:8081/api/thichanh/checklike', {
-            username: nguoidung,
-            images_id: maanh
+            params: {
+                username: nguoidung,
+                images_id: maanh
+            }
         })
     }
 }
@@ -238,12 +267,12 @@ export function huyThichAnh(maanh, nguoithich) {
 
 export function taiAnhDaiDien(files) {
     return dispatch => {
-        
+
     }
 }
 
 export function luuAnhDaiDien(url, username) {
     return dispatch => {
-        
+
     }
 }
